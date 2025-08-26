@@ -1,0 +1,17 @@
+# Node.js
+node_modules/
+npm-debug.log
+yarn-error.log
+package-lock.json
+
+# Logs
+*.log
+logs
+debug.log
+
+# Sistema operativo
+.DS_Store
+Thumbs.db
+
+# Entornos
+.env
