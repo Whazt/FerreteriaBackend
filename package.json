@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Backend para la Ecomerce de Ferretería Salomon, elaborado con node.js y express.js preparado para trabajar con una base de datos de PostgreSQL",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "start": "node --env-file=.env server.js"
   },
@@ -31,5 +32,4 @@
   "devDependencies": {
     "standard": "^17.1.2"
   }
- 
 }
