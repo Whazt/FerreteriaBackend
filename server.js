@@ -1,5 +1,5 @@
 import app from './app.js';
-import sequelize from './src/config/db.js';
+import { sequelize } from './src/config/db.js';
 
 //Definición del puerto
 const PORT = process.env.PORT || 4000;

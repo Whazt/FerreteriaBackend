@@ -1,8 +1,8 @@
-import {DataTypes} from "sequelize";
-import sequelize from "../config/db.js";
+import { DataTypes } from "sequelize";
+import { sequelize } from "../config/db.js";
 
 //Definición del modelo Categoria 
-const categoria = sequelize.define(
+const categoriaModel = sequelize.define(
     'categoria', 
     {
         id:{
@@ -29,4 +29,4 @@ const categoria = sequelize.define(
 
 });
 
-export default categoria;
+export default categoriaModel;
