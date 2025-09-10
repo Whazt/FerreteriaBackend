@@ -1,6 +1,8 @@
 export class CategoriaServices{
-    constructor({categoriaModel}){
+    constructor({categoriaModel, zodValidator, categoriaSchema }){
         this.categoriaModel = categoriaModel;
+        this.zodValidator = zodValidator;
+        this.schema = categoriaSchema;
     }
 
     async getAllCategorias(){
@@ -12,13 +14,15 @@ export class CategoriaServices{
     }
 
     async createCategoria(data){
-        return await this.categoriaModel.create(data);
+        const validatedData = this.zodValidator.validate(this.schema.create, data);
+        return await this.categoriaModel.create(validatedData);
     }
 
     async updateCategoria(id, data){
         const categoria = await this.categoriaModel.findByPk(id);
         if(!categoria) throw new Error('Categoría no encontrada');
-        return await categoria.update(data);
+        const validatedData = this.zodValidator.validate(this.schema.update, data);
+        return await categoria.update(validatedData);
     }
 
     async deleteCategoria(id){
