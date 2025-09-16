@@ -15,6 +15,10 @@ Thumbs.db
 
 # Entornos
 .env
+<<<<<<< HEAD
 
 #archivos
 swagger.json
+=======
+Hola
+>>>>>>> 0d4279c0669382b968861bc5f76f216231ef7f2b
