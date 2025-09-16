@@ -1,15 +1,21 @@
 export class ZodValidator {
     validate(schema, data) {
-        const result = schema.safeParse(data);
-        if (!result.success) {
+    const result = schema.safeParse(data);
+    if (!result.success) {
+        console.log('Data: ', data);
         const error = new Error('Validación fallida');
         error.status = 400;
-        error.details = result.error.errors.map(err => ({
+        const erroresZod = result.error?.errors;
+        if (Array.isArray(erroresZod)) {
+            error.details = erroresZod.map(err => ({
             campo: err.path.join('.'),
             mensaje: err.message
-        }));
-        throw error;
+            }));
+        } else {
+            error.details = [{ campo: 'desconocido', mensaje: 'Error de validación inesperado' }];
         }
-        return result.data;
+        throw error;
+    }
+    return result.data;
     }
 }

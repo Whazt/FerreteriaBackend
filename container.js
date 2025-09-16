@@ -9,10 +9,13 @@ import { Relaciones } from './src/models/relaciones.js';
 //Helpers
 import { ZodValidator } from './src/helpers/zodValidator.js';
 //Schemas
+import { authSchema } from './src/schemas/auth.schema.js';
 import { CategoriaSchema } from './src/schemas/categoria.schema.js';
 //Servicios
+import { AuthServices } from './src/services/auth.services.js';
 import { CategoriaServices } from './src/services/categoria.services.js';
 //Controladores
+import { AuthController } from './src/controllers/auth.controller.js';
 import { CategoriaController } from './src/controllers/categoria.controller.js';
 
 
@@ -21,7 +24,7 @@ export class Container{
         //Modelos
         this.usuarioModel = usuarioModel(sequelize, DataTypes);
         this.rolModel = rolModel(sequelize, DataTypes);
-        this.categoriaModel = categoriaModel;
+        // this.categoriaModel = categoriaModel;
         //Relaciones
         const modelos = {
             usuarioModel: this.usuarioModel,
@@ -31,16 +34,27 @@ export class Container{
         //Helpers
         this.zodValidator = new ZodValidator();
         //Schemas
-        this.categoriaSchema = CategoriaSchema;
+        this.authSchema = authSchema;
+        // this.categoriaSchema = CategoriaSchema;
+
         //Servicios
-        this.categoriaServices = new CategoriaServices({
-            categoriaModel: this.categoriaModel,
+        this.authServices = new AuthServices({
+            userModel: this.usuarioModel,
             zodValidator: this.zodValidator,
-            categoriaSchema: this.categoriaSchema
+            authSchema: this.authSchema
         });
+
+        // this.categoriaServices = new CategoriaServices({
+        //     categoriaModel: this.categoriaModel,
+        //     zodValidator: this.zodValidator,
+        //     categoriaSchema: this.categoriaSchema
+        // });
         //Controladores
-        this.categoriaController = new CategoriaController({
-            categoriaServices: this.categoriaServices
+        this.authController = new AuthController({
+            authServices: this.authServices
         });
+        // this.categoriaController = new CategoriaController({
+        //     categoriaServices: this.categoriaServices
+        // });
     }
 }
