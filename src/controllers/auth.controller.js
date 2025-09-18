@@ -7,12 +7,15 @@ export class AuthController {
 
     async register(req, res) {
         try {
-            const { email, password } = req.body;
-            const result = await this.authServices.register({ email, password });
+            const { email, password, nombres, apellidos, telefono } = req.body;
+            const result = await this.authServices.register({ email, password, nombres, apellidos, telefono });
             res.status(201).json(result);
         }
-        catch (error) {
-            res.status(400).json({ error: error.message });
+        catch (err) {
+            if (err.details) {
+                return res.status(err.status || 400).json({ errores: err.details });
+            }
+            res.status(400).json({ error: err.message });
         }
     }
 
@@ -30,8 +33,11 @@ export class AuthController {
             console.log('Access token generado:', refreshToken);
             // Enviar solo el accessToken en la respuesta
             res.status(200).json(accesToken);
-        } catch (error) {
-            res.status(401).json({ error: error.message });
+        } catch (err) {
+            if (err.details) {
+                return res.status(err.status || 400).json({ errores: err.details });
+            }
+            res.status(400).json({ error: err.message });
         }
     }
 

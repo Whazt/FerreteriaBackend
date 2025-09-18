@@ -1,6 +1,3 @@
-import { de } from "zod/locales";
-
-
 //Definición del modelo Usuario 
 export const usuarioModel = (sequelize, DataTypes) => {
     return  sequelize.define(

@@ -4,6 +4,7 @@ import { DataTypes } from 'sequelize';
 import categoriaModel from './src/models/categoria.model.js';
 import { usuarioModel } from './src/models/usuario.model.js';
 import { rolModel } from './src/models/rol.model.js';
+import { clienteModel} from './src/models/cliente.model.js';
 //Relaciones
 import { Relaciones } from './src/models/relaciones.js';
 //Helpers
@@ -24,11 +25,13 @@ export class Container{
         //Modelos
         this.usuarioModel = usuarioModel(sequelize, DataTypes);
         this.rolModel = rolModel(sequelize, DataTypes);
+        this.clienteModel = clienteModel(sequelize, DataTypes);
         // this.categoriaModel = categoriaModel;
         //Relaciones
         const modelos = {
             usuarioModel: this.usuarioModel,
-            rolModel: this.rolModel
+            rolModel: this.rolModel,
+            clienteModel: this.clienteModel
         };
         Relaciones(modelos);
         //Helpers
@@ -40,6 +43,7 @@ export class Container{
         //Servicios
         this.authServices = new AuthServices({
             userModel: this.usuarioModel,
+            clienteModel: this.clienteModel,
             zodValidator: this.zodValidator,
             authSchema: this.authSchema
         });

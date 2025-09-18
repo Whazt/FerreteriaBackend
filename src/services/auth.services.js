@@ -1,25 +1,46 @@
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
+import { Transaction } from "sequelize";
 
 export class AuthServices {
-    constructor({ userModel , zodValidator, authSchema}) {
+    constructor({ userModel , zodValidator, authSchema, clienteModel}) {
         this.userModel = userModel;
         this.zodValidator = zodValidator;
         this.authSchema = authSchema;
+        this.clienteModel = clienteModel;
     }
 
-    async register({ email, password }) {
+    async register({ email, password, nombres, apellidos, telefono }) {
         // Validar datos de entrada
         this.zodValidator.validate(this.authSchema.register, { email, password });
         // Verificar si el usuario ya existe
         const existingUser = await this.userModel.findOne({ where: { email } });
-        if (existingUser) throw new Error('El usuario ya existe');
+        if (existingUser) throw new Error('El correo ya se encuentra en uso');
         // Hashear la contraseña
         const salt = await bcrypt.genSalt(15);
         const hashedPassword = await bcrypt.hash(password, salt);
-        // Crear el usuario
-        const newUser = await this.userModel.create({ email, contrasenaHash: hashedPassword, rolId: 2 });
-        return { id: newUser.id, email: newUser.email};
+        //Iniciar Transaction por si no se crea uno de los dos registros
+        const transaction = await this.userModel.sequelize.transaction();
+        try{
+            //Creación de Usuario y Cliente
+            const newUser = await this.userModel.create(
+                { email, contrasenaHash: hashedPassword, rolId: 2 },
+                { transaction }
+            );
+            const newCustomer = await this.clienteModel.create(
+                {nombres, apellidos, telefono, usuarioId: newUser.id},
+                { transaction }
+            );
+            console.log('entra a commit');
+            await transaction.commit();
+            console.log('hecho');
+            return { id: newUser.id, nombres: newCustomer.nombres, apellidos: newCustomer.apellidos};
+        }catch(error){
+            console.log('entra a rollback');
+            await transaction.rollback();
+
+            throw error;
+        }
     }
 
     
