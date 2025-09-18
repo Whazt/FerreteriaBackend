@@ -49,7 +49,6 @@ export class AuthServices {
     }
 
     generarRefreshToken(payload) {
-        console.log('Generando refresh token con payload:', process.env.REFRESH_TOKEN_SECRET);
         return jwt.sign(payload, process.env.REFRESH_TOKEN_SECRET, { expiresIn: '7d' });
     }
     
@@ -60,15 +59,13 @@ export class AuthServices {
         const user = await this.userModel.findOne({where: { email }});
         if (!user) throw new Error('Usuario no encontrado');
         // Verificar contraseña
-        // console.log('password:', password);
-        // console.log('user.contrasenaHash:', user.contrasenaHash);
         const isPasswordValid = await bcrypt.compare(password, user.contrasenaHash);
         if (!isPasswordValid) throw new Error('Contraseña incorrecta');
         // Generar token JWT
         const payload = { id: user.id, email: user.email, rol: user.rolId };
         const accesToken = this.generarAccessToken(payload);
         const refreshToken = this.generarRefreshToken(payload);
-        // const refreshToken = this.generarRefreshToken(payload);
+        
         // Retornar tokens
         return { accesToken , refreshToken };
     }
