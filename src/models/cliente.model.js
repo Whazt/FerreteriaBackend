@@ -11,20 +11,20 @@ export const clienteModel  = (sequelize , DataTypes) => {
             },
             nombres:{
                 type: DataTypes.STRING(50),
-                allownull: false,
+                allowNull: false,
             },
             apellidos:{
                 type: DataTypes.STRING(50),
-                allownull: false,
+                allowNull: false,
             },
             telefono:{
                 type: DataTypes.CHAR(8),
                 unique: true,
-                allownull: false
+                allowNull: false
             },
             usuarioId:{
                 type: DataTypes.INTEGER,
-                allownull: false,
+                allowNull: false,
                 references:{
                     model: 'usuarios',
                     key: 'id'
