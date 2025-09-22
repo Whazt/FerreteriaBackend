@@ -1,0 +1,58 @@
+export class UsuarioService{
+    constructor({usuarioModel, zodValidator, usuarioSchema}){
+        this.usuario = usuarioModel;
+        this.validator = zodValidator;
+        this.schema = usuarioSchema;
+    }
+
+    async getAll(data){
+        const parsedLimit = parseInt(data.limit); 
+        const finalLimit = isNaN(parsedLimit) || parsedLimit <= 20 ? 20  
+            : parsedLimit>=30 ? 30
+            : parsedLimit;
+        const parsedPage = parseInt(data.page);
+        const finalPage = parsedPage < 1 || isNaN(parsedPage) ? 1 : parsedPage;
+        const offset = (finalPage - 1) * finalLimit;
+        const { count, rows } = await this.usuario.findAndCountAll({
+            offset,
+            limit: finalLimit,
+            //Para agregar filtros
+            //order: [['createdAt', 'DESC']],
+            // where: {...}
+        });
+        return {
+            data: rows,
+            meta: {
+                total: count,
+                page: finalPage,
+                limit: finalLimit,
+                totalPages: Math.ceil(count / finalLimit),
+                hasNext: finalPage * finalLimit < count
+            },
+            mensaje: rows.length ? undefined : 'No hay productos disponibles'
+        };
+    }
+    
+    async getById(id){
+        const usuario = await this.usuario.findById(id);
+        return usuario ? usuario : {message: 'Producto No Encontrado'}
+    }
+
+    async create(data){
+        const validatedData = this.validator.validate(this.schema.create, data);
+        return await this.usuario.create(validatedData);
+    }
+
+    async updateproducto(id, data){
+        const usuario = await this.usuario.findByPk(id);
+        if(!usuario) throw new Error('Categoría no encontrada');
+        const validatedData = this.validator.validate(this.schema.update, data);
+        return await usuario.update(validatedData);
+    }
+
+    async deleteproducto(id){
+        const usuario = await this.usuario.findByPk(id);
+        if(!usuario) throw new Error('Categoría no encontrada');
+        return await usuario.destroy();
+    }
+}

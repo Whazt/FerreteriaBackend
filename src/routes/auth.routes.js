@@ -2,8 +2,9 @@ import { Router } from 'express';
 
 export const createAuthRouter = ({authController}) => {
     const authRouter = Router();
-    authRouter.post('/login', (req, res) => authController.login(req, res));
-    authRouter.post('/register', (req, res) => authController.register(req, res));  
-    authRouter.post('/refresh', (req, res) => authController.refreshToken(req, res));
+    authRouter.post('/login', authController.login);
+    authRouter.post('/register', authController.register);  
+    authRouter.post('/refresh', authController.refreshToken);
+    //authRouter.post('/logout', authController.logout);
     return authRouter;
 }

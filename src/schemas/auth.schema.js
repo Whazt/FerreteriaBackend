@@ -1,7 +1,8 @@
 import { z } from 'zod';
 
 const loginSchema = z.object({
-    email: z.email({ message: 'El correo no tiene un formato válido' })
+    email: z.string().
+        email({ message: 'El correo no tiene un formato válido' })
         .min(5, { message: 'El correo es demasiado corto' })
         .max(50, { message: 'El correo no puede exceder 50 caracteres' })
         .trim(),

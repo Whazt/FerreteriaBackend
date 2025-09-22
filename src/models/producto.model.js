@@ -19,7 +19,7 @@ export const productoModel = ({sequelize, DataTypes}) => {
                 allowNull: false,
                 validate:{
                     isDecimal: true,
-                    min: 0
+                    min: 0.01
                 }
             },
             existencias:{
