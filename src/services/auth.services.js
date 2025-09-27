@@ -9,7 +9,7 @@ export class AuthServices {
         this.cliente = clienteModel;
     }
 
-    async register({ data }) {
+    async register( data ) {
         // Validar datos de entrada
         const dataValid = this.validator.validate(this.schema.register, data);
         // Verificar si el usuario ya existe

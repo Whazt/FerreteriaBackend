@@ -7,7 +7,7 @@ export class AuthController {
 
     register = async (req, res) => {
         try {
-            const result = await this.authServices.register({ data: req.body });
+            const result = await this.authServices.register( req.body );
             res.status(201).json(result);
         }
         catch (err) {
@@ -20,7 +20,7 @@ export class AuthController {
 
     login = async (req, res) => {
         try {
-            const { accesToken, refreshToken } = await this.authServices.login({ data: req.body});
+            const { accesToken, refreshToken } = await this.authServices.login(req.body);
             res.cookie('refreshToken', refreshToken, {
                 httpOnly: true,
                 secure: false, // En producción debe ser true 
