@@ -38,7 +38,6 @@ export class AuthServices {
             await transaction.commit();
             return { id: newUser.id, nombres: newCustomer.nombres, apellidos: newCustomer.apellidos};
         }catch(error){
-            console.log('entra a rollback');
             await transaction.rollback();
             throw error;
         }
@@ -46,11 +45,11 @@ export class AuthServices {
     
     //Metodos para generar Tokens
     generarAccessToken(payload) {
-        return jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '30m' });
+        return jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '15m' });
     }
     
     generarRefreshToken(payload) {
-        return jwt.sign(payload, process.env.REFRESH_TOKEN_SECRET, { expiresIn: '7d' });
+        return jwt.sign(payload, process.env.REFRESH_TOKEN_SECRET, { expiresIn: '30d' });
     }
     
     async login( data ) {
