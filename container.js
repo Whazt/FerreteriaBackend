@@ -13,8 +13,8 @@ import { ZodValidator } from './src/helpers/zodValidator.js';
 import { authSchema } from './src/schemas/auth.schema.js';
 import { CategoriaSchema } from './src/schemas/categoria.schema.js';
 //Servicios
-import { AuthServices } from './src/services/auth.services.js';
-import { CategoriaServices } from './src/services/categoria.services.js';
+import { AuthServices } from './src/services/auth.service.js';
+import { CategoriaServices } from './src/services/categoria.service.js';
 //Controladores
 import { AuthController } from './src/controllers/auth.controller.js';
 import { CategoriaController } from './src/controllers/categoria.controller.js';
