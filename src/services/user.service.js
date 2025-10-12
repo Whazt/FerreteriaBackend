@@ -5,6 +5,7 @@ export class UsuarioService{
         this.schema = usuarioSchema;
     }
 
+    //GetAll admin
     async getAll(data){
         const parsedLimit = parseInt(data.limit); 
         const finalLimit = isNaN(parsedLimit) || parsedLimit <= 20 ? 20  
@@ -43,14 +44,14 @@ export class UsuarioService{
         return await this.usuario.create(validatedData);
     }
 
-    async updateproducto(id, data){
+    async update(id, data){
         const usuario = await this.usuario.findByPk(id);
         if(!usuario) throw new Error('Categoría no encontrada');
         const validatedData = this.validator.validate(this.schema.update, data);
         return await usuario.update(validatedData);
     }
 
-    async deleteproducto(id){
+    async delete(id){
         const usuario = await this.usuario.findByPk(id);
         if(!usuario) throw new Error('Categoría no encontrada');
         return await usuario.destroy();

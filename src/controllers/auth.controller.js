@@ -7,7 +7,7 @@ export class AuthController {
 
     register = async (req, res) => {
         try {
-            const result = await this.authServices.register( req.body );
+            const result = await this.authServices.register(req.body);
             res.status(201).json(result);
         }
         catch (err) {

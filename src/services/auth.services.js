@@ -22,10 +22,11 @@ export class AuthServices {
         const transaction = await this.user.sequelize.transaction();
         try{
             //Creación de Usuario y Cliente
+
             const userData = {
                 email: dataValid.email, 
                 contrasenaHash: hashedPassword, 
-                olId: 2
+                rolId: 2
             }
             const newUser = await this.user.create(userData,{ transaction });
             const customerData = {
