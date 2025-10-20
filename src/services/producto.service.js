@@ -4,7 +4,6 @@ export class ProductoService{
         this.validator = zodValidator,
         this.schema = productoSchema
     }
-
     //Metodo para vizualizacion del cliente
     async getAll(data) {
         const parsedLimit = parseInt(data.limit); 
@@ -33,7 +32,6 @@ export class ProductoService{
             mensaje: rows.length ? undefined : 'No hay productos disponibles'
         };
     }
-
     async getById(id){
         const producto = await this.producto.findById(id);
         return producto ? producto : {message: 'Producto No Encontrado'}
