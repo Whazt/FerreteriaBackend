@@ -22,7 +22,6 @@ export class AuthServices {
         const transaction = await this.user.sequelize.transaction();
         try{
             //Creación de Usuario y Cliente
-
             const userData = {
                 email: dataValid.email, 
                 contrasenaHash: hashedPassword, 

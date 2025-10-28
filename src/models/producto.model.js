@@ -37,6 +37,17 @@ export const productoModel = ({sequelize, DataTypes}) => {
                     key:'id'
                 }
             },
+            costo:{
+                type: DataTypes.DECIMAL(10,2),
+                allowNull: false,
+                validate:{
+                    min: 1
+                }
+            },
+            imagenUrl:{
+                type: DataTypes.STRING,
+                allowNull: true,
+            },
             existenciaMax:{
                 type: DataTypes.INTEGER,
                 allowNull: false,
