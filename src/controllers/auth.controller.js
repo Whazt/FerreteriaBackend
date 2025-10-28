@@ -14,7 +14,7 @@ export class AuthController {
             if (err.details) {
                 return res.status(err.status || 400).json({ errores: err.details });
             }
-            res.status(400).json({ error: err.message });
+            res.status(500).json({ error: err.message });
         }
     }
 
@@ -34,7 +34,7 @@ export class AuthController {
             if (err.details) {
                 return res.status(err.status || 400).json({ errores: err.details });
             }
-            res.status(400).json({ error: err.message });
+            res.status(500).json({ error: err.message });
         }
     }
 
@@ -48,17 +48,25 @@ export class AuthController {
         }
     }
 
-    logout (req, res){
+    logout(req, res) {
         try {
+            const token = req.cookies?.refreshToken;
+
+            if (!token) {
+            return res.status(401).json({ mensaje: 'No hay sesión activa para cerrar' });
+            }
+
             res.clearCookie('refreshToken', {
             httpOnly: true,
             secure: false,
             sameSite: 'Strict'
             });
+
             res.status(200).json({ mensaje: 'Sesión cerrada correctamente' });
         } catch (error) {
             res.status(400).json({ error: error.message });
         }
     }
+
 
 }

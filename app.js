@@ -18,8 +18,7 @@ app.get('/', function(req,res){
 })
 const container = new Container();
 app.use('/auth', createAuthRouter({authController: container.authController})); 
-
-// app.use('/categorias', createCategoriaRouter({categoriaController: container.categoriaController}));
+app.use('/categorias', createCategoriaRouter({categoriaController: container.categoriaController}));
 
 //Midlewares Globales
 

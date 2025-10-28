@@ -1,4 +1,3 @@
-import { HostNotFoundError } from "sequelize";
 
 //CRUD Categorias
 export class CategoriaController{
@@ -31,8 +30,11 @@ export class CategoriaController{
         try{
             const newCategoria = await this.categoriaServices.createCategoria(req.body);
             res.status(201).json(newCategoria);
-        }catch(error){
-            res.status(500).json({ error: error.message });
+        }catch (err) {
+            if (err.details) {
+                return res.status(err.status || 400).json({ errores: err.details });
+            }
+            res.status(500).json({ error: err.message });
         }
     };
 
@@ -42,9 +44,12 @@ export class CategoriaController{
             const updated = await this.categoriaServices.updateCategoria(id, req.body);
             if(!updated) return res.status(404).json({message: 'Categoría no encontrada'});
             res.json({message: 'Categoría actualizada correctamente'});
-        }catch(error){
-            res.status(500).json({ error: error.message });
-        }   
+        }catch (err) {
+            if (err.details) {
+                return res.status(err.status || 400).json({ errores: err.details });
+            }
+            res.status(500).json({ error: err.message });
+        } 
     };
 
     deleteCategoria = async(req, res) => {
@@ -54,7 +59,6 @@ export class CategoriaController{
             if(!deleted) return res.status(404).json({message: 'Categoría no encontrada'});
             res.json({message: 'Categoría eliminada correctamente'});
         }catch(error){
-            
             res.status(500).json({ error: error.message });
         }
     };

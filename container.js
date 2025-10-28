@@ -24,44 +24,47 @@ import { CategoriaController } from './src/controllers/categoria.controller.js';
 
 export class Container{
     constructor(){
-        //Modelos
+        //MODELOS
         this.usuarioModel = usuarioModel(sequelize, DataTypes);
         this.rolModel = rolModel(sequelize, DataTypes);
         this.clienteModel = clienteModel(sequelize, DataTypes);
         this.categoriaModel = categoriaModel(sequelize,DataTypes);
         this.productoModel = productoModel(sequelize, DataTypes);
-        //Relaciones
+        //RELACIONES
         const modelos = {
             usuarioModel: this.usuarioModel,
             rolModel: this.rolModel,
             clienteModel: this.clienteModel
         };
         Relaciones(modelos);
-        //Helpers
-        this.zodValidator = new ZodValidator();
-        //Schemas
-        this.authSchema = authSchema;
-        // this.categoriaSchema = CategoriaSchema;
 
-        //Servicios
+        //HELPERS
+        this.zodValidator = new ZodValidator();
+
+        //SCHEMAS
+        this.authSchema = authSchema;
+        this.categoriaSchema = CategoriaSchema;
+
+        //SERVICIOS
         this.authServices = new AuthServices({
             userModel: this.usuarioModel,
             clienteModel: this.clienteModel,
             zodValidator: this.zodValidator,
             authSchema: this.authSchema
         });
+        this.categoriaServices = new CategoriaServices({
+            categoriaModel: this.categoriaModel,
+            zodValidator: this.zodValidator,
+            categoriaSchema: this.categoriaSchema
+        });
 
-        // this.categoriaServices = new CategoriaServices({
-        //     categoriaModel: this.categoriaModel,
-        //     zodValidator: this.zodValidator,
-        //     categoriaSchema: this.categoriaSchema
-        // });
-        //Controladores
+
+        //CONTROLADORES
         this.authController = new AuthController({
             authServices: this.authServices
         });
-        // this.categoriaController = new CategoriaController({
-        //     categoriaServices: this.categoriaServices
-        // });
+        this.categoriaController = new CategoriaController({
+            categoriaServices: this.categoriaServices
+        });
     }
 }
