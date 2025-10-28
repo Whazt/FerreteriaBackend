@@ -1,4 +1,4 @@
-export const productoModel = ({sequelize, DataTypes}) => {
+export const productoModel = (sequelize, DataTypes) => {
     return sequelize.define(
         'producto',
         {

@@ -36,4 +36,20 @@ export class ProductoService{
         const producto = await this.producto.findById(id);
         return producto ? producto : {message: 'Producto No Encontrado'}
     }
+
+    async create(data){
+        return await this.producto.create(data);
+    }
+
+    async update(id,data){
+        const producto = await this.productoyPk(id);
+        if(!producto) throw new Error('producto no encontrado');
+        return await producto.update(producto);
+    }
+
+    async delete(id){
+        const producto = await this.producto.findByPk(id);
+        if(!producto) throw new Error('producto no encontrado');
+        return await producto.destroy();
+    }
 }

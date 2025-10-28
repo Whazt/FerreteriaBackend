@@ -1,10 +1,12 @@
 import { sequelize } from './src/config/db.js';
 import { DataTypes } from 'sequelize';
 //Modelos
-import categoriaModel from './src/models/categoria.model.js';
+import { categoriaModel } from './src/models/categoria.model.js';
 import { usuarioModel } from './src/models/usuario.model.js';
 import { rolModel } from './src/models/rol.model.js';
 import { clienteModel} from './src/models/cliente.model.js';
+import { productoModel } from './src/models/producto.model.js';
+
 //Relaciones
 import { Relaciones } from './src/models/relaciones.js';
 //Helpers
@@ -26,7 +28,8 @@ export class Container{
         this.usuarioModel = usuarioModel(sequelize, DataTypes);
         this.rolModel = rolModel(sequelize, DataTypes);
         this.clienteModel = clienteModel(sequelize, DataTypes);
-        // this.categoriaModel = categoriaModel;
+        this.categoriaModel = categoriaModel(sequelize,DataTypes);
+        this.productoModel = productoModel(sequelize, DataTypes);
         //Relaciones
         const modelos = {
             usuarioModel: this.usuarioModel,
