@@ -1,16 +1,11 @@
-import { id } from "zod/locales"
 
 export const carritoModel = ({sequelize, DataTypes}) =>{
     return sequelize.define(
         'carrito',
         {
-            usuarioID:{
-                type: DataTypes.INTEGER,
+            sesionID:{
+                type: DataTypes.STRING,
                 allowNull: false,
-                references:{
-                    model:'usuarios',
-                    key: 'id'
-                }
             },
             productoId:{
                 type: DataTypes.INTEGER,
@@ -24,9 +19,10 @@ export const carritoModel = ({sequelize, DataTypes}) =>{
                 type: DataTypes.INTEGER,
                 allowNull: false,
                 validate:{
-                    min:1
+                    min:1,
+                    isInt: true,
                 }
-            }
+            },
         },
         {
             //configuraciones
