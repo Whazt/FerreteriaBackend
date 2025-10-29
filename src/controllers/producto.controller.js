@@ -3,9 +3,9 @@ export class ProductoController{
         this.productoService = productoServices
     }
     //Visualización del cliente
-    getProductoAll = async (req, res) => {
+    getProductos = async (req, res) => {
         try {
-            const resultado = await productoService.getAll(req.query);
+            const resultado = await productoService.getAllProductos(req.query);
             res.status(200).json(resultado);
         } catch (error) {
             res.status(500).json({ error: 'Error al obtener productos' });
