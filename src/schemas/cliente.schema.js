@@ -19,7 +19,7 @@ const createClienteSchema = z.object({
         .regex(/^\d{8}$/, {
             message: 'El número debe tener exactamente 8 dígitos numéricos',
         }),
-    usuarioId: z.integer
+    usuarioId: z.integer("Debe ser un numero entero"),
 });
 
 const updateClienteSchema = z.object({
