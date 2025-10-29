@@ -40,15 +40,15 @@ export class UsuarioService{
     }
 
     async create(data){
-        const validatedData = this.validator.validate(this.schema.create, data);
-        return await this.usuario.create(validatedData);
+        //const validatedData = this.validator.validate(this.schema.create, data);
+        return await this.usuario.create(data);
     }
 
     async update(id, data){
         const usuario = await this.usuario.findByPk(id);
         if(!usuario) throw new Error('Categoría no encontrada');
-        const validatedData = this.validator.validate(this.schema.update, data);
-        return await usuario.update(validatedData);
+        //const validatedData = this.validator.validate(this.schema.update, data);
+        return await usuario.update(data);
     }
 
     async delete(id){
