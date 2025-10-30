@@ -18,7 +18,8 @@ export class CarritoController {
 
     agregarProducto = async (req, res) => {
         try {
-            const resultado = await this.carritoService.agregarProducto(req.body);
+            const { sesionID, productoId, cantidad } = req.body;
+            const resultado = await this.carritoService.agregarProducto({ sesionID, productoId, cantidad });
             res.status(201).json(resultado);
         }catch (err) {
             if (err.details) {
