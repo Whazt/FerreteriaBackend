@@ -9,9 +9,11 @@ export class CategoriaController{
         try{
             const categorias = await this.categoriaServices.getAllCategorias();
             res.json(categorias);
-        }catch(error){
-            console.error('Error al obtener las categorías:', error);
-            res.status(500).json({message: 'Error al obtener las categorías'});
+        }catch (err) {
+            if (err.details) {
+                return res.status(err.status || 400).json({ errores: err.details });
+            }
+            res.status(500).json({ error: err.message });
         }
     }; 
 
@@ -21,8 +23,11 @@ export class CategoriaController{
             const categoria = await this.categoriaServices.getCategoriaById(id);
             if(!categoria) return res.status(404).json({message: 'Categoría no encontrada'});
             res.json(categoria);
-        }catch(error){
-            res.status(500).json({ error: error.message });
+        }catch (err) {
+            if (err.details) {
+                return res.status(err.status || 400).json({ errores: err.details });
+            }
+            res.status(500).json({ error: err.message });
         }
     };
 
@@ -58,8 +63,11 @@ export class CategoriaController{
             const deleted = await this.categoriaServices.deleteCategoria(id);
             if(!deleted) return res.status(404).json({message: 'Categoría no encontrada'});
             res.json({message: 'Categoría eliminada correctamente'});
-        }catch(error){
-            res.status(500).json({ error: error.message });
+        }catch (err) {
+            if (err.details) {
+                return res.status(err.status || 400).json({ errores: err.details });
+            }
+            res.status(500).json({ error: err.message });
         }
     };
 }
