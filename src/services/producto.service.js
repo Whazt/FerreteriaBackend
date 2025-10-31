@@ -17,8 +17,6 @@ export class ProductoService{
             offset,
             limit: finalLimit,
             //Para agregar filtros
-            //order: [['createdAt', 'DESC']],
-            // where: {...}
         });
         return {
             data: rows,
@@ -33,18 +31,20 @@ export class ProductoService{
         };
     }
     async getById(id){
-        const producto = await this.producto.findById(id);
+        const producto = await this.producto.findByPk(id);
         return producto ? producto : {message: 'Producto No Encontrado'}
     }
 
     async create(data){
-        return await this.producto.create(data);
+        const validatedData = await this.validator.validate(this.schema.create, data)
+        return await this.producto.create(validatedData);
     }
 
     async update(id,data){
-        const producto = await this.productoyPk(id);
+        const producto = await this.producto.findByPk(id);
         if(!producto) throw new Error('producto no encontrado');
-        return await producto.update(producto);
+        const validatedData = await this.validator.validate(this.schema.update, data)
+        return await producto.update(validatedData);
     }
 
     async delete(id){

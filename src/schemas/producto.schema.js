@@ -47,18 +47,14 @@ const createProductoSchema = z.object({
 
     existenciaMax: z
     .coerce
-    .number({
-      required_error: "La existencia máxima es obligatoria.",
-    })
+    .number()
     .integer("La existencia máxima debe ser un número entero.")
     .min(0, "La existencia máxima no puede ser negativa.")
     .default(0),
 
   existenciaMin: z
     .coerce
-    .number({
-      required_error: "La existencia mínima es obligatoria.",
-    })
+    .number()
     .integer("La existencia mínima debe ser un número entero.")
     .min(0, "La existencia mínima no puede ser negativa.")
     .default(0),

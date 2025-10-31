@@ -16,7 +16,7 @@ export class UsuarioService{
         const offset = (finalPage - 1) * finalLimit;
         const { count, rows } = await this.usuario.findAndCountAll({
             offset,
-            limit: finalLimit,
+            limit: finalLimit, m
             //Para agregar filtros
             //order: [['createdAt', 'DESC']],
             // where: {...}
@@ -35,25 +35,25 @@ export class UsuarioService{
     }
     
     async getById(id){
-        const usuario = await this.usuario.findById(id);
-        return usuario ? usuario : {message: 'Producto No Encontrado'}
+        const usuario = await this.usuario.findByPk(id);
+        return usuario ? usuario : {message: 'Usuario No Encontrado'}
     }
 
     async create(data){
-        //const validatedData = this.validator.validate(this.schema.create, data);
-        return await this.usuario.create(data);
+        const validatedData = this.validator.validate(this.schema.create, data);
+        return await this.usuario.create(validatedData);
     }
 
     async update(id, data){
         const usuario = await this.usuario.findByPk(id);
-        if(!usuario) throw new Error('Categoría no encontrada');
-        //const validatedData = this.validator.validate(this.schema.update, data);
-        return await usuario.update(data);
+        if(!usuario) throw new Error('Usuario no encontrada');
+        const validatedData = this.validator.validate(this.schema.update, data);
+        return await usuario.update(validatedData);
     }
 
     async delete(id){
         const usuario = await this.usuario.findByPk(id);
-        if(!usuario) throw new Error('Categoría no encontrada');
+        if(!usuario) throw new Error('Usuario no encontrado');
         return await usuario.destroy();
     }
 }

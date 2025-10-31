@@ -13,24 +13,9 @@ export class CarritoService {
         });
     }
 
-    async agregarProducto({ sesionID, productoId, cantidad }) {
-        const validatedData = this.validator.validate(this.schema.agregar, { sesionID, productoId, cantidad });
-        const producto = await this.producto.findByPk(productoId);
-        if (!producto) throw new Error('Producto no existe');
-        const existente = await this.carrito.findOne({ where: { sesionID, productoId } });
-        const cantidadFinal = (existente?.cantidad || 0) + cantidad;
-        if (cantidadFinal > producto.stock) {
-        throw new Error(`Stock insuficiente. Máximo permitido: ${producto.stock}`);
-        }
-        if (existente) {
-        existente.cantidad = cantidadFinal;
-        return await existente.save();
-        }
-        return await this.carrito.create({ sesionID, productoId, cantidad });
-    }
-
     async agregarProducto({ data }) {
-        const { sesionID, productoId, cantidad } = data;
+        const validatedData = this.validator.validate(this.schema.ajustar, data);
+        const { sesionID, productoId, cantidad } = validatedData;
         const producto = await this.producto.findByPk(productoId);
         if (!producto) throw new Error('Producto no existe');
         const existente = await this.carrito.findOne({
@@ -48,8 +33,8 @@ export class CarritoService {
     }
 
     async ajustarCantidad({ data }) {
-       // const validatedData = this.validator.validate(this.schema.ajustar, data);
-        const { sesionID, productoId, operacion } = data;
+        const validatedData = this.validator.validate(this.schema.ajustar, data);
+        const { sesionID, productoId, operacion } = validatedData;
         const item = await this.carrito.findOne({ where: { sesionID, productoId } });
         if (!item) throw new Error('Producto no está en el carrito');
         const producto = await this.producto.findByPk(productoId);
