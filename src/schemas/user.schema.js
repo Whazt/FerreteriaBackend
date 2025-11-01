@@ -10,7 +10,7 @@ const createUserSchema = z.object({
         .min(8, { message: 'La contraseña debe tener al menos 8 caracteres' })
         .max(64, { message: 'La contraseña no puede exceder 64 caracteres' })
         .trim(),
-    rolId: z.integer("Debe ser un numero entero"),
+    rolId: z.int("Debe ser un numero entero"),
 });
 
 const updateUserSchema = z.object({
@@ -26,7 +26,7 @@ const updateUserSchema = z.object({
         .regex(/[a-z]/, { message: 'Debe contener al menos una letra minúscula' })
         .regex(/\d/, { message: 'Debe contener al menos un número' })
         .trim().optional(),
-    rolId: z.integer("Debe ser un numero entero").optional()
+    rolId: z.int("Debe ser un numero entero").optional()
 });
 
 export const UserSchema = {

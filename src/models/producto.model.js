@@ -4,7 +4,8 @@ export const productoModel = (sequelize, DataTypes) => {
         {
             codProducto:{
                 type: DataTypes.STRING(14),
-                primarykey: true
+                primarykey: true,
+                unique: true
             },
             producto:{
                 type: DataTypes.STRING(100),

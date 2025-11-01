@@ -6,7 +6,7 @@ import { usuarioModel } from './src/models/usuario.model.js';
 import { rolModel } from './src/models/rol.model.js';
 import { clienteModel} from './src/models/cliente.model.js';
 import { productoModel } from './src/models/producto.model.js';
-import { carritoModel } from './src/models/carrito.model'
+import { carritoModel } from './src/models/carrito.model.js'
 //Relaciones
 import { Relaciones } from './src/models/relaciones.js';
 //Helpers

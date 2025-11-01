@@ -11,7 +11,6 @@ const createCarritoSchema = z.object({
     .string({
       required_error: "El codigo del producto es obligatorio.",
     })
-    .integer("El ID del producto debe ser un número entero.")
     .min(1, "Debe seleccionar un producto válido."),
 
   cantidad: z
@@ -19,12 +18,12 @@ const createCarritoSchema = z.object({
     .number({
       required_error: "La cantidad es obligatoria.",
     })
-    .integer("La cantidad debe ser un número entero.")
+    .int("La cantidad debe ser un número entero.")
     .min(1, "La cantidad mínima debe ser 1."),
 });
 
 const updateCarritoSchema = z.object({
-    cantidad: z.integer().optional()
+    cantidad: z.int().optional()
 });
 
 export const CarritoSchema = {

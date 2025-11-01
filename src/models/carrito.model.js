@@ -1,5 +1,5 @@
 
-export const carritoModel = ({sequelize, DataTypes}) =>{
+export const carritoModel = (sequelize, DataTypes) =>{
     return sequelize.define(
         'carrito',
         {
@@ -12,7 +12,7 @@ export const carritoModel = ({sequelize, DataTypes}) =>{
                 allowNull: false,
                 references:{
                     model:'productos',
-                    key: 'codProducto'
+                    key: 'cod_producto'
                 }
             },
             cantidad:{
