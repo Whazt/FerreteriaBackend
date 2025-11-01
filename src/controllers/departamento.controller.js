@@ -1,12 +1,12 @@
-export class RolController {
-    constructor({ rolServices }) {
-        this.rolService = rolServices;
+export class DepartamentoController {
+    constructor({ departamentoServices }) {
+        this.departamentoService = departamentoServices;
     }
 
     getAll = async (req, res) => {
         try {
-            const roles = await this.rolService.getAll();
-            res.status(200).json(roles);
+            const departamentos = await this.departamentoService.getAll();
+            res.status(200).json(departamentos);
         } catch (err) {
             if (err.details) {
                 return res.status(err.status || 400).json({ errores: err.details });
@@ -15,11 +15,12 @@ export class RolController {
         }
     };
 
+    // Obtener un departamento por ID
     getById = async (req, res) => {
         try {
             const { id } = req.params;
-            const rol = await this.rolService.getById(id);
-            res.status(200).json(rol);
+            const departamento = await this.departamentoService.getById(id);
+            res.status(200).json(departamento);
         } catch (err) {
             if (err.details) {
                 return res.status(err.status || 400).json({ errores: err.details });
@@ -30,8 +31,8 @@ export class RolController {
 
     create = async (req, res) => {
         try {
-            const nuevoRol = await this.rolService.create(req.body);
-            res.status(201).json(nuevoRol);
+            const nuevoDepartamento = await this.departamentoService.create(req.body);
+            res.status(201).json(nuevoDepartamento);
         } catch (err) {
             if (err.details) {
                 return res.status(err.status || 400).json({ errores: err.details });
@@ -40,11 +41,12 @@ export class RolController {
         }
     };
 
+    // Actualizar un departamento existente
     update = async (req, res) => {
         try {
             const { id } = req.params;
-            const actualizado = await this.rolService.update(id, req.body);
-            res.status(200).json({ mensaje: 'Rol actualizado correctamente', data: actualizado });
+            const actualizado = await this.departamentoService.update(id, req.body);
+            res.status(200).json({ mensaje: 'Departamento actualizado correctamente', data: actualizado });
         } catch (err) {
             if (err.details) {
                 return res.status(err.status || 400).json({ errores: err.details });
@@ -52,12 +54,12 @@ export class RolController {
             res.status(500).json({ error: err.message });
         }
     };
-
+¿
     delete = async (req, res) => {
         try {
             const { id } = req.params;
-            await this.rolService.delete(id);
-            res.status(200).json({ mensaje: 'Rol eliminado correctamente' });
+            await this.departamentoService.delete(id);
+            res.status(200).json({ mensaje: 'Departamento eliminado correctamente' });
         } catch (err) {
             if (err.details) {
                 return res.status(err.status || 400).json({ errores: err.details });
