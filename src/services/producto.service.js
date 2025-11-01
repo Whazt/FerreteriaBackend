@@ -49,7 +49,7 @@ export class ProductoServices{
 
     async delete(id){
         const producto = await this.producto.findByPk(id);
-        if(!producto) throw new Error('producto no encontrado');
+        if(!producto) throw new Error('producto no encontrado');  
         return await producto.destroy();
     }
 }
