@@ -3,7 +3,7 @@ export const carritoModel = (sequelize, DataTypes) =>{
     return sequelize.define(
         'carrito',
         {
-            sesionID:{
+            sesionId:{
                 type: DataTypes.STRING,
                 allowNull: false,
             },
