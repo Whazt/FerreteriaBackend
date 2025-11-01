@@ -8,7 +8,7 @@ export const carritoModel = ({sequelize, DataTypes}) =>{
                 allowNull: false,
             },
             productoId:{
-                type: DataTypes.INTEGER,
+                type: DataTypes.STRING,
                 allowNull: false,
                 references:{
                     model:'productos',
