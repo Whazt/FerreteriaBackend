@@ -1,8 +1,8 @@
-export class ClienteServices{
-    constructor({clienteModel, zodValidator, clienteSchema}){
-        this.rol = clienteModel;
+export class RolServices{
+    constructor({rolModel, zodValidator, rolSchema}){
+        this.rol = rolModel;
         this.validator = zodValidator;
-        this.schema = clienteSchema;
+        this.schema = rolSchema;
     }
 
     async getAll(){

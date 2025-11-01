@@ -29,7 +29,7 @@ const updateUserSchema = z.object({
     rolId: z.integer("Debe ser un numero entero").optional()
 });
 
-export const authSchema = {
+export const UserSchema = {
     create: createUserSchema,
     update: updateUserSchema
 };

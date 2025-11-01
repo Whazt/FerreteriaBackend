@@ -1,4 +1,4 @@
-export class UsuarioService{
+export class UsuarioServices{
     constructor({usuarioModel, zodValidator, usuarioSchema}){
         this.usuario = usuarioModel;
         this.validator = zodValidator;

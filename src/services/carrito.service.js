@@ -1,4 +1,4 @@
-export class CarritoService {
+export class CarritoServices {
     constructor({ carritoModel, productoModel, zodValidator, carritoSchema }) {
         this.carrito = carritoModel;
         this.producto = productoModel;

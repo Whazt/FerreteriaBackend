@@ -1,4 +1,4 @@
-export class ProductoService{
+export class ProductoServices{
     constructor({productoModel, zodValidator, productoSchema}){
         this.producto = productoModel,
         this.validator = zodValidator,
