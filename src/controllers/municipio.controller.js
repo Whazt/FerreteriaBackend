@@ -1,12 +1,12 @@
-export class DepartamentoController {
-    constructor({ departamentoServices }) {
-        this.departamentoService = departamentoServices;
+export class MunicipioController {
+    constructor({ municipioServices }) {
+        this.municipioService = municipioServices;
     }
 
     getAll = async (req, res) => {
         try {
-            const departamentos = await this.departamentoService.getAll();
-            res.status(200).json(departamentos);
+            const municipios = await this.municipioService.getAll();
+            res.status(200).json(municipios);
         } catch (err) {
             if (err.details) {
                 return res.status(err.status || 400).json({ errores: err.details });
@@ -15,12 +15,12 @@ export class DepartamentoController {
         }
     };
 
-    // Obtener un departamento por ID
+    // Obtener un municipio por ID
     getById = async (req, res) => {
         try {
             const { id } = req.params;
-            const departamento = await this.departamentoService.getById(id);
-            res.status(200).json(departamento);
+            const municipio = await this.municipioService.getById(id);
+            res.status(200).json(municipio);
         } catch (err) {
             if (err.details) {
                 return res.status(err.status || 400).json({ errores: err.details });
@@ -31,8 +31,8 @@ export class DepartamentoController {
 
     create = async (req, res) => {
         try {
-            const nuevoDepartamento = await this.departamentoService.create(req.body);
-            res.status(201).json(nuevoDepartamento);
+            const nuevoMunicipio = await this.municipioService.create(req.body);
+            res.status(201).json(nuevoMunicipio);
         } catch (err) {
             if (err.details) {
                 return res.status(err.status || 400).json({ errores: err.details });
@@ -41,12 +41,12 @@ export class DepartamentoController {
         }
     };
 
-    // Actualizar un departamento existente
+    // Actualizar un municipio existente
     update = async (req, res) => {
         try {
             const { id } = req.params;
-            const actualizado = await this.departamentoService.update(id, req.body);
-            res.status(200).json({ mensaje: 'Departamento actualizado correctamente', data: actualizado });
+            const actualizado = await this.municipioService.update(id, req.body);
+            res.status(200).json({ mensaje: 'Municipio actualizado correctamente', data: actualizado });
         } catch (err) {
             if (err.details) {
                 return res.status(err.status || 400).json({ errores: err.details });
@@ -58,8 +58,8 @@ export class DepartamentoController {
     delete = async (req, res) => {
         try {
             const { id } = req.params;
-            await this.departamentoService.delete(id);
-            res.status(200).json({ mensaje: 'Departamento eliminado correctamente' });
+            await this.municipioService.delete(id);
+            res.status(200).json({ mensaje: 'Municipio eliminado correctamente' });
         } catch (err) {
             if (err.details) {
                 return res.status(err.status || 400).json({ errores: err.details });
