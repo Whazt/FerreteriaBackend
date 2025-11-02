@@ -11,4 +11,10 @@ export const Relaciones = (modelos) => {
     ///Categoria tiene muchos productos y Productos pertence a una categoria
     modelos.categoriaModel.hasMany(modelos.productoModel, { foreignKey: 'categoriaId', as: 'productos' });
     modelos.carritoModel.belongsTo(modelos.productoModel, { foreignKey: 'categoriaId', as: 'categoria' });
+    //Pedido y detallepedido
+    modelos.pedidoModel.hasMany(modelos.detallePedidoModel, { foreignKey: 'pedidoId', as: 'detalles' });
+    modelos.detallePedidoModel.belongsTo(modelos.pedidoModel, { foreignKey: 'pedidoId', as: 'pedido' });
+    modelos.detallePedidoModel.belongsTo(modelos.productoModel, { foreignKey: 'productoId', as: 'producto' });
+    modelos.pedidoModel.belongsTo(modelos.clienteModel, {foreignKey: 'clienteId', as: 'cliente'});
+    modelos.clienteModel.hasMany(modelos.pedidoModel, {foreignKey: 'clienteId', as: 'pedidos'});
 }

@@ -1,19 +1,11 @@
-
-export const carritoModel = (sequelize, DataTypes) =>{
+export const ajusteModel = (sequelize, DataTypes) =>{
     return sequelize.define(
-        'carrito',
+        'ajuste',
         {
-            sesionId:{
-                type: DataTypes.STRING,
-                allowNull: false,
-            },
-            usuarioId:{
+            id:{
                 type: DataTypes.INTEGER,
-                allowNull: true,
-                references:{
-                    model: 'usuarios',
-                    key: 'id'
-                },
+                allowNull: false,
+                autoincrement: true
             },
             productoId:{
                 type: DataTypes.STRING,
@@ -21,6 +13,14 @@ export const carritoModel = (sequelize, DataTypes) =>{
                 references:{
                     model:'productos',
                     key: 'cod_producto'
+                }
+            },
+            tipoAjusteId:{
+                type: DataTypes.INTEGER,
+                allowNull: false,
+                references:{
+                    model:'tipoAjuste',
+                    key: 'id'
                 }
             },
             cantidad:{
@@ -31,11 +31,16 @@ export const carritoModel = (sequelize, DataTypes) =>{
                     isInt: true,
                 }
             },
+            observacion:{
+                type:DataTypes.TEXT,
+                allowNull: false
+            }
         },
         {
             //configuraciones
-            modelName: 'carrito',
-            tableName: 'carrito',
+            modelName: 'ajuste',
+            tableName: 'ajuste',
+            paranoid: true,
             timestamps: true,
             underscored: true
         }
