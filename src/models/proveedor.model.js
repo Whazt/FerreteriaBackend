@@ -1,4 +1,4 @@
-//Definicion del Modelo Cliente
+//Definicion del Modelo Proveedor
 
 export const proveedorModel  = (sequelize , DataTypes) => {
     return sequelize.define(
