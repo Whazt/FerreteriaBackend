@@ -12,7 +12,7 @@ export class PedidoService{
 
     async getAll(){
         return await this.pedido.findAll(
-            { include: [{ model: this.detallePedido }] }
+            { include: [{ model: this.detallePedido, as: 'detalles' }] }
         );
     }
 
@@ -20,12 +20,12 @@ export class PedidoService{
         if(!data) throw new Error('el ID del Cliente es necesario')
         return await this.pedido.findAll({
             where: { clienteId: data },
-            include: [{ model: this.detallePedido }]
+            include: [{ model: this.detallePedido, as: 'detalles' }]
         });
     }
 
     async getById(id){
-        const pedido = await this.pedido.findByPk(id, {include:[{model: this.detallePedido}]});
+        const pedido = await this.pedido.findByPk(id, {include:[{model: this.detallePedido, as: 'detalles'}]});
         return pedido ? pedido : {message: 'Pedido No Encontrado'}
     }
 

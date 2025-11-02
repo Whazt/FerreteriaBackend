@@ -1,49 +1,60 @@
-export const ajusteModel = (sequelize, DataTypes) =>{
+export const ajusteModel = (sequelize, DataTypes) => {
     return sequelize.define(
         'ajuste',
         {
-            id:{
+            id: {
                 type: DataTypes.INTEGER,
                 primaryKey: true,
                 allowNull: false,
-                autoincrement: true
+                autoIncrement: true
             },
-            productoId:{
+            productoId: {
                 type: DataTypes.STRING,
                 allowNull: false,
-                references:{
-                    model:'productos',
-                    key: 'cod_producto'
+                references: {
+                model: 'productos',
+                key: 'cod_producto'
                 }
             },
-            tipoAjusteId:{
+            tipoAjusteId: {
                 type: DataTypes.INTEGER,
                 allowNull: false,
-                references:{
-                    model:'tipo_ajuste',
+                references: {
+                    model: 'tipo_ajuste',
                     key: 'id'
                 }
             },
-            cantidad:{
+            cantidad: {
                 type: DataTypes.INTEGER,
                 allowNull: false,
-                validate:{
-                    min:1,
-                    isInt: true,
+                validate: {
+                min: 1,
+                isInt: true
                 }
             },
-            observacion:{
-                type:DataTypes.TEXT,
+            accion: {
+                type: DataTypes.ENUM('aumento', 'disminucion'),
                 allowNull: false
+            },
+            observacion: {
+                type: DataTypes.TEXT,
+                allowNull: false
+            },
+            usuarioId: {
+                type: DataTypes.INTEGER,
+                allowNull: false,
+                references: {
+                    model: 'usuarios',
+                    key: 'id'
+                }
             }
         },
         {
-            //configuraciones
             modelName: 'ajuste',
-            tableName: 'ajuste',
+            tableName: 'ajustes',
             paranoid: true,
             timestamps: true,
             underscored: true
         }
-    )
-}
+    );
+};
