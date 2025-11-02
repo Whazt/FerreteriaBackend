@@ -1,6 +1,6 @@
-export const detallePedidoModel = (sequelize, DataTypes) => {
+export const detalleCompraModel = (sequelize, DataTypes) => {
     return sequelize.define(
-        'detallePedido',
+        'detalleCompra',
         {
             id: {
                 type: DataTypes.INTEGER,
@@ -20,7 +20,7 @@ export const detallePedidoModel = (sequelize, DataTypes) => {
                 allowNull: false,
                 references: {
                     model: 'productos',
-                    key: 'codProducto'
+                    key: 'cod_producto'
                 }
             },
             cantidad: {
@@ -46,8 +46,8 @@ export const detallePedidoModel = (sequelize, DataTypes) => {
             }
         },
         {
-            modelName: 'detallePedido',
-            tableName: 'detallePedido',
+            modelName: 'detalleCompra',
+            tableName: 'detalle_compra',
             paranoid: true,
             timestamps: true,
             underscored: true

@@ -20,7 +20,7 @@ export const detallePedidoModel = (sequelize, DataTypes) => {
                 allowNull: false,
                 references: {
                     model: 'productos',
-                    key: 'codProducto'
+                    key: 'cod_producto'
                 }
             },
             cantidad: {
@@ -47,7 +47,7 @@ export const detallePedidoModel = (sequelize, DataTypes) => {
         },
         {
             modelName: 'detallePedido',
-            tableName: 'detallePedido',
+            tableName: 'detalle_pedido',
             paranoid: true,
             timestamps: true,
             underscored: true

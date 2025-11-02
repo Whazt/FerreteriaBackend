@@ -17,4 +17,7 @@ export const Relaciones = (modelos) => {
     modelos.detallePedidoModel.belongsTo(modelos.productoModel, { foreignKey: 'productoId', as: 'producto' });
     modelos.pedidoModel.belongsTo(modelos.clienteModel, {foreignKey: 'clienteId', as: 'cliente'});
     modelos.clienteModel.hasMany(modelos.pedidoModel, {foreignKey: 'clienteId', as: 'pedidos'});
+    //compras proveedores
+    modelos.compraModel.belongsTo(modelos.proveedorModel, {foreignKey: 'proveedorId', as: 'proveedor'});
+    modelos.proveedorModel.hasMany(modelos.compraModel, {foreignKey: 'proveedorId', as: 'compras'});
 }

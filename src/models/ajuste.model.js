@@ -4,6 +4,7 @@ export const ajusteModel = (sequelize, DataTypes) =>{
         {
             id:{
                 type: DataTypes.INTEGER,
+                primaryKey: true,
                 allowNull: false,
                 autoincrement: true
             },
@@ -19,7 +20,7 @@ export const ajusteModel = (sequelize, DataTypes) =>{
                 type: DataTypes.INTEGER,
                 allowNull: false,
                 references:{
-                    model:'tipoAjuste',
+                    model:'tipo_ajuste',
                     key: 'id'
                 }
             },

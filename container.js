@@ -1,12 +1,22 @@
 import { sequelize } from './src/config/db.js';
 import { DataTypes } from 'sequelize';
 //Modelos
+import { ajusteModel } from './src/models/ajuste.model.js'
+import { carritoModel } from './src/models/carrito.model.js'
 import { categoriaModel } from './src/models/categoria.model.js';
+import { clienteModel } from './src/models/cliente.model.js';
+import { compraModel } from './src/models/compras.model.js';
+import { departamentoModel } from './src/models/departamento.model.js';
+import { detalleCompraModel } from './src/models/detallecompra.model.js';
+import { detallePedidoModel } from './src/models/detallepedido.model.js';
+import { direccionModel } from './src/models/direccion.model.js';
+import { municipioModel } from './src/models/municipio.model.js';
+import { pedidoModel } from './src/models/pedido.model.js';
+import { productoModel } from './src/models/producto.model.js';
+import { proveedorModel } from './src/models/proveedor.model.js';
+import { tipoAjusteModel } from './src/models/tipoajuste.model.js';
 import { usuarioModel } from './src/models/usuario.model.js';
 import { rolModel } from './src/models/rol.model.js';
-import { clienteModel} from './src/models/cliente.model.js';
-import { productoModel } from './src/models/producto.model.js';
-import { carritoModel } from './src/models/carrito.model.js'
 //Relaciones
 import { Relaciones } from './src/models/relaciones.js';
 //Helpers
@@ -37,26 +47,44 @@ import { ProductoController } from './src/controllers/producto.controller.js';
 export class Container{
     constructor(){
         //MODELOS
+        this.ajusteModel = ajusteModel( sequelize, DataTypes);
+        this.carritoModel = carritoModel(sequelize, DataTypes);
+        this.categoriaModel = categoriaModel(sequelize,DataTypes);
+        this.clienteModel = clienteModel(sequelize, DataTypes);
+        this.compraModel = compraModel(sequelize, DataTypes);
+        this.departamentoModel = departamentoModel(sequelize, DataTypes);
+        this.detalleCompraModel = detalleCompraModel(sequelize, DataTypes);
+        this.detallePedidoModel = detallePedidoModel(sequelize, DataTypes);
+        this.direccionModel = direccionModel(sequelize, DataTypes);
+        this.municipioModel = municipioModel(sequelize, DataTypes);
+        this.pedidoModel = pedidoModel(sequelize, DataTypes);
+        this.productoModel = productoModel(sequelize, DataTypes);
+        this.proveedorModel = proveedorModel(sequelize, DataTypes);
+        this.tipoAjusteModel = tipoAjusteModel(sequelize, DataTypes);
         this.usuarioModel = usuarioModel(sequelize, DataTypes);
         this.rolModel = rolModel(sequelize, DataTypes);
-        this.carritoModel = carritoModel(sequelize, DataTypes);
-        this.clienteModel = clienteModel(sequelize, DataTypes);
-        this.categoriaModel = categoriaModel(sequelize,DataTypes);
-        this.productoModel = productoModel(sequelize, DataTypes);
         //RELACIONES
         const modelos = {
-            usuarioModel: this.usuarioModel,
-            rolModel: this.rolModel,
-            clienteModel: this.clienteModel,
+            ajusteModel: this.ajusteModel,
             carritoModel: this.carritoModel,
             categoriaModel: this.categoriaModel,
-            productoModel: this.productoModel
+            clienteModel: this.clienteModel,
+            compraModel: this.compraModel,
+            departamentoModel: this.departamentoModel,
+            detalleCompraModel: this.detalleCompraModel,
+            detallePedidoModel: this.detallePedidoModel,
+            direccionModel: this.direccionModel,
+            municipioModel: this.municipioModel,
+            pedidoModel: this.pedidoModel,
+            productoModel: this.productoModel,
+            proveedorModel: this.proveedorModel,
+            tipoAjusteModel: this.tipoAjusteModel,            
+            usuarioModel: this.usuarioModel,
+            rolModel: this.rolModel,
         };
         Relaciones(modelos);
-
         //HELPERS
         this.zodValidator = new ZodValidator();
-
         //SCHEMAS
         this.authSchema = authSchema;
         this.categoriaSchema = CategoriaSchema;
@@ -111,6 +139,5 @@ export class Container{
         this.productoController = new ProductoController({
             productoServices: this.productoServices
         });
-
     }
 }

@@ -1,4 +1,4 @@
-export const tipoajusteModel = (sequelize, DataTypes) => {
+export const tipoAjusteModel = (sequelize, DataTypes) => {
     return sequelize.define(
         'tipoajuste', 
         {
