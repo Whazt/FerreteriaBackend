@@ -1,11 +1,11 @@
 import { Router } from 'express';
 
-export const createTipoAjusteRouter = ({tipoajusteController}) => {
+export const createTipoAjusteRouter = ({tipoAjusteController}) => {
     const tipoajusteRouter = Router();
-    tipoajusteRouter.get('/', tipoajusteController.getAll);
-    tipoajusteRouter.get('/:id', tipoajusteController.getById);  
-    tipoajusteRouter.post('/', tipoajusteController.create);
-    tipoajusteRouter.put('/:id', tipoajusteController.update);
-    tipoajusteRouter.delete('/:id', tipoajusteController.delete);
+    tipoajusteRouter.get('/', tipoAjusteController.getAll);
+    tipoajusteRouter.get('/:id', tipoAjusteController.getById);  
+    tipoajusteRouter.post('/', tipoAjusteController.create);
+    tipoajusteRouter.put('/:id', tipoAjusteController.update);
+    tipoajusteRouter.delete('/:id', tipoAjusteController.delete);
     return tipoajusteRouter;
 }

@@ -1,11 +1,11 @@
 import { Router } from 'express';
 
-export const createUserRouter = ({userController}) => {
+export const createUserRouter = ({usuarioController}) => {
     const userRouter = Router();
-    userRouter.get('/', userController.getAll);
-    userRouter.get('/:id', userController.getById);  
-    userRouter.post('/', userController.crete);
-    userRouter.put('/:id', userController.update);
-    userRouter.delete('/:id', userController.delete);
+    userRouter.get('/', usuarioController.getAll);
+    userRouter.get('/:id', usuarioController.getById);  
+    userRouter.post('/', usuarioController.create);
+    userRouter.put('/:id', usuarioController.update);
+    userRouter.delete('/:id', usuarioController.delete);
     return userRouter;
 }

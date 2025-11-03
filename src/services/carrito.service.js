@@ -6,20 +6,20 @@ export class CarritoServices {
         this.schema = carritoSchema;
     }
 
-    async getCarritoBySesion(sesionID) {
+    async getCarritoBySesion(sesionId) {
         return await this.carrito.findAll({
-        where: { sesionID },
+        where: { sesionId },
         include: [{ model: this.producto }]
         });
     }
 
     async agregarProducto({ data }) {
         const validatedData = this.validator.validate(this.schema.ajustar, data);
-        const { sesionID, productoId, cantidad } = validatedData;
+        const { sesionId, productoId, cantidad } = validatedData;
         const producto = await this.producto.findByPk(productoId);
         if (!producto) throw new Error('Producto no existe');
         const existente = await this.carrito.findOne({
-            where: { sesionID, productoId }
+            where: { sesionId, productoId }
         });
         const cantidadFinal = (existente?.cantidad || 0) + cantidad;
         if (cantidadFinal > producto.stock) {
@@ -29,13 +29,13 @@ export class CarritoServices {
             existente.cantidad = cantidadFinal;
             return await existente.save();
         }
-        return await this.carrito.create({ sesionID, productoId, cantidad });
+        return await this.carrito.create({ sesionId, productoId, cantidad });
     }
 
     async ajustarCantidad({ data }) {
         const validatedData = this.validator.validate(this.schema.ajustar, data);
-        const { sesionID, productoId, operacion } = validatedData;
-        const item = await this.carrito.findOne({ where: { sesionID, productoId } });
+        const { sesionId, productoId, operacion } = validatedData;
+        const item = await this.carrito.findOne({ where: { sesionId, productoId } });
         if (!item) throw new Error('Producto no está en el carrito');
         const producto = await this.producto.findByPk(productoId);
         if (!producto) throw new Error('Producto no existe');
@@ -58,16 +58,16 @@ export class CarritoServices {
     }
 
     async eliminarProducto({ data }) {
-        const { sesionID, productoId } = data;
-        return await this.carrito.destroy({ where: { sesionID, productoId } });
+        const { sesionId, productoId } = data;
+        return await this.carrito.destroy({ where: { sesionId, productoId } });
     }
 
-    async limpiarCarrito(sesionID) {
-        return await this.carrito.destroy({ where: { sesionID } });
+    async limpiarCarrito(sesionId) {
+        return await this.carrito.destroy({ where: { sesionId } });
     }
 
-    async calcularTotal(sesionID) {
-        const items = await this.getCarritoBySesion(sesionID);
+    async calcularTotal(sesionId) {
+        const items = await this.getCarritoBySesion(sesionId);
         return items.reduce((total, item) => {
         const precio = item.producto?.precio || 0;
         return total + precio * item.cantidad;

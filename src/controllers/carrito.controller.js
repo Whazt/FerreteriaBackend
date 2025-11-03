@@ -5,8 +5,8 @@ export class CarritoController {
 
     getCarritoBySesion = async (req, res) => {
         try {
-            const { sesionID } = req.params;
-            const items = await this.carritoService.getCarritoBySesion(sesionID);
+            const { sesionId } = req.params;
+            const items = await this.carritoService.getCarritoBySesion(sesionId);
             res.status(200).json(items);
         }catch (err) {
             if (err.details) {
@@ -18,8 +18,8 @@ export class CarritoController {
 
     agregarProducto = async (req, res) => {
         try {
-            const { sesionID, productoId, cantidad } = req.body;
-            const resultado = await this.carritoService.agregarProducto({ sesionID, productoId, cantidad });
+            const { sesionId, productoId, cantidad } = req.body;
+            const resultado = await this.carritoService.agregarProducto({ sesionId, productoId, cantidad });
             res.status(201).json(resultado);
         }catch (err) {
             if (err.details) {
@@ -55,8 +55,8 @@ export class CarritoController {
 
     limpiarCarrito = async (req, res) => {
         try {
-            const { sesionID } = req.params;
-            await this.carritoService.limpiarCarrito(sesionID);
+            const { sesionId } = req.params;
+            await this.carritoService.limpiarCarrito(sesionId);
             res.status(200).json({ mensaje: 'Carrito limpiado correctamente' });
         }catch (err) {
             if (err.details) {
@@ -68,8 +68,8 @@ export class CarritoController {
 
     calcularTotal = async (req, res) => {
         try {
-            const { sesionID } = req.params;
-            const total = await this.carritoService.calcularTotal(sesionID);
+            const { sesionId } = req.params;
+            const total = await this.carritoService.calcularTotal(sesionId);
             res.status(200).json({ total });
         }catch (err) {
             if (err.details) {

@@ -2,10 +2,11 @@ import { Router } from 'express';
 
 export const createCarritoRouter = ({carritoController}) => {
     const carritoRouter = Router();
-    carritoRouter.get('/', carritoController.getAll);
-    carritoRouter.get('/:id', carritoController.getById);  
-    carritoRouter.post('/', carritoController.crete);
-    carritoRouter.put('/:id', carritoController.update);
-    carritoRouter.delete('/:id', carritoController.delete);
+    carritoRouter.get('/:sesionId', carritoController.getCarritoBySesion);
+    carritoRouter.post('/', carritoController.agregarProducto);  
+    carritoRouter.put('/', carritoController.ajustarCantidad);
+    carritoRouter.delete('/', carritoController.eliminarProducto);
+    carritoRouter.delete('/:id', carritoController.limpiarCarrito);
+    carritoRouter.get('/:sesionId', carritoController.calcularTotal);
     return carritoRouter;
 }
