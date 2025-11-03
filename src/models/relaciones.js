@@ -1,3 +1,4 @@
+
 export const Relaciones = (modelos) => {
     //Rol muchos usuarios y Usuario pertence a un rol
     modelos.rolModel.hasMany(modelos.usuarioModel, { foreignKey: 'rolId', as: 'usuarios' });
@@ -20,4 +21,20 @@ export const Relaciones = (modelos) => {
     //compras proveedores
     modelos.compraModel.belongsTo(modelos.proveedorModel, {foreignKey: 'proveedorId', as: 'proveedor'});
     modelos.proveedorModel.hasMany(modelos.compraModel, {foreignKey: 'proveedorId', as: 'compras'});
+    modelos.detalleCompraModel.belongsTo(modelos.compraModel, {foreignKey: 'compraId', as: 'compra'});
+    modelos.compraModel.hasMany(modelos.detalleCompraModel, { foreignKey: 'compraId', as: 'detalles' });
+    modelos.detalleCompraModel.belongsTo(modelos.productoModel, { foreignKey: 'productoId', as: 'producto' });
+    //ajuste 
+    modelos.ajusteModel.belongsTo(modelos.productoModel, {foreignKey: 'productoId', targetKey: 'codProducto', as: 'producto'});
+    modelos.ajusteModel.belongsTo(modelos.tipoAjusteModel, {foreignKey: 'tipoAjusteId', as: 'tipoAjuste'});
+    modelos.ajusteModel.belongsTo(modelos.usuarioModel, { foreignKey: 'usuarioId', as: 'usuario'});
+    modelos.productoModel.hasMany(modelos.ajusteModel, {foreignKey: 'productoId', sourceKey: 'codProducto', as: 'ajustes'});
+    modelos.tipoAjusteModel.hasMany(modelos.ajusteModel, {foreignKey: 'tipoAjusteId', as: 'ajustes'});
+    modelos.usuarioModel.hasMany(modelos.ajusteModel, {foreignKey: 'usuarioId',as: 'ajustes'});
+    //departamento municipio
+    modelos.departamentoModel.hasMany(modelos.municipioModel, {foreignKey: 'departamentoId', as: 'municipios'});
+    modelos.municipioModel.belongsTo(modelos.departamentoModel, {foreignKey: 'departamentoId',as: 'departamento'});
+    //direccion municipio
+    modelos.municipioModel.hasMany(modelos.direccionModel, {foreignKey: 'municipioId', as: 'direcciones'});
+    modelos.direccionModel.belongsTo(modelos.municipioModel, {foreignKey: 'municipioId',as: 'municipio'});
 }
