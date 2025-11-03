@@ -1,5 +1,4 @@
-import { UPDATE } from 'sequelize/lib/query-types';
-import { optional, z } from 'zod';
+import { z } from 'zod';
 
 const aplicarCompraSchema = z.object({
     accion: z.enum(['aumento', 'disminucion'], {
