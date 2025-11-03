@@ -6,6 +6,12 @@ const createCarritoSchema = z.object({
       required_error: "El ID de sesión es obligatorio.",
     })
     .min(1, "El ID de sesión no puede estar vacío."),
+  
+  usuarioId: z
+    .string({
+      required_error: "El ID del usuario es obligatorio.",
+    })
+    .min(1).optional(),
 
   productoId: z
     .string({
