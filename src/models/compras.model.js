@@ -32,7 +32,7 @@ export const compraModel = (sequelize, DataTypes) => {
             estado: {
                 type: DataTypes.ENUM('registrada', 'aplicada'),
                 allowNull: false,
-                defaultValue: 'pendiente'
+                defaultValue: 'registrada'
             }
         },
         {
