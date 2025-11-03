@@ -1,7 +1,7 @@
 import { email, z } from 'zod';
 
 const createProveedorSchema = z.object({
-    nombres: z.string().min(1, 'El nombre es obligatorio'),
+    nombre: z.string().min(1, 'El nombre es obligatorio'),
     telefono: z.string()
         .regex(/^\d{8}$/, {
             message: 'El número debe tener exactamente 8 dígitos numéricos',
