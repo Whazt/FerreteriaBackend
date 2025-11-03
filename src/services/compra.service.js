@@ -1,4 +1,4 @@
-export class CompraService {
+export class CompraServices {
     constructor({ compraModel, detalleCompraModel, productoModel, proveedorModel }) {
         this.compra = compraModel;
         this.detalleCompra = detalleCompraModel;

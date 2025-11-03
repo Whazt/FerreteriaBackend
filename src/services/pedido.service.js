@@ -1,6 +1,6 @@
 import { Sequelize } from "sequelize";
 
-export class PedidoService{
+export class PedidoServices{
     constructor({pedidoModel, detallePedidoModel, productoModel, clienteModel}){
         this.pedido = pedidoModel;
         this.detallePedido = detallePedidoModel;

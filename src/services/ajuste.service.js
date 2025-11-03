@@ -1,4 +1,4 @@
-export class AjusteService {
+export class AjusteServices {
     constructor({ ajusteModel, productoModel, tipoAjusteModel, usuarioModel}) {
         this.ajuste = ajusteModel;
         this.producto = productoModel;
