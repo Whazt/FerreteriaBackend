@@ -1,11 +1,9 @@
 export class AjusteService {
-    constructor({ ajusteModel, productoModel, tipoAjusteModel, usuarioModel, zodValidator, ajusteSchema }) {
+    constructor({ ajusteModel, productoModel, tipoAjusteModel, usuarioModel}) {
         this.ajuste = ajusteModel;
         this.producto = productoModel;
         this.tipoAjuste = tipoAjusteModel;
         this.usuario = usuarioModel;
-        this.validator = zodValidator;
-        this.schema = ajusteSchema;
     }
 
     async getAll() {

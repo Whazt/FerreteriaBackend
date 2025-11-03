@@ -1,13 +1,11 @@
 import { Sequelize } from "sequelize";
 
 export class PedidoService{
-    constructor({pedidoModel, detallePedidoModel, productoModel, clienteModel, zodValidator, pedidoSchema }){
+    constructor({pedidoModel, detallePedidoModel, productoModel, clienteModel}){
         this.pedido = pedidoModel;
         this.detallePedido = detallePedidoModel;
         this.producto = productoModel;
         this.cliente = clienteModel;
-        this.validator = zodValidator;
-        this.schema = pedidoSchema;
     }
 
     async getAll(){

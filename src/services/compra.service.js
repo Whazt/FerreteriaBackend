@@ -1,11 +1,9 @@
 export class CompraService {
-    constructor({ compraModel, detalleCompraModel, productoModel, proveedorModel, zodValidator, compraSchema }) {
+    constructor({ compraModel, detalleCompraModel, productoModel, proveedorModel }) {
         this.compra = compraModel;
         this.detalleCompra = detalleCompraModel;
         this.producto = productoModel;
         this.proveedor = proveedorModel;
-        this.validator = zodValidator;
-        this.schema = compraSchema;
     }
 
     async getAll() {
