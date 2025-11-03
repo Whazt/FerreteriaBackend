@@ -5,49 +5,68 @@ export class AuthController {
         this.authServices = authServices;
     }
 
-    async register(req, res) {
+    register = async (req, res) => {
         try {
-            const { email, password } = req.body;
-            const result = await this.authServices.register({ email, password });
+            const result = await this.authServices.register(req.body);
             res.status(201).json(result);
         }
-        catch (error) {
-            res.status(400).json({ error: error.message });
+        catch (err) {
+            if (err.details) {
+                return res.status(err.status || 400).json({ errores: err.details });
+            }
+            res.status(500).json({ error: err.message });
         }
     }
 
-    async login(req, res) {
+    login = async (req, res) => {
         try {
-            // console.log('Body recibido: ',req.body);
-            const { email, password } = req.body;
-            const { accesToken, refreshToken } = await this.authServices.login({ email, password });
+            const { accesToken, refreshToken } = await this.authServices.login(req.body);
             res.cookie('refreshToken', refreshToken, {
                 httpOnly: true,
                 secure: false, // En producción debe ser true 
                 sameSite: 'Strict', 
-                maxAge: 7 * 24 * 60 * 60 * 1000 // 7 días
+                maxAge: 7 * 24 * 60 * 60 * 1000 // 7 días CAMBIAR A 30 DIAS
             });
-            console.log('Access token generado:', refreshToken);
+
             // Enviar solo el accessToken en la respuesta
             res.status(200).json(accesToken);
-        } catch (error) {
-            res.status(401).json({ error: error.message });
+        } catch (err) {
+            if (err.details) {
+                return res.status(err.status || 400).json({ errores: err.details });
+            }
+            res.status(500).json({ error: err.message });
         }
     }
 
-    async refreshToken(req, res) {
-        const token = req.cookies.refreshToken;
-        console.log('Refresh token recibido:', token);
-        if (!token) {
-            return res.status(401).json({ error: 'No se encontró el refresh token' });
-        }
+    refreshToken = async (req, res) => {
         try {
-            const decoded = jwt.verify(token,process.env.REFRESH_TOKEN_SECRET);
-            const payload = { id: decoded.id, email: decoded.email, rol: decoded.rol };
-            const nuevoAccessToken = this.authServices.generarAccessToken(payload);
-            return res.status(200).json(nuevoAccessToken);
-        } catch (error) {
-            return res.status(403).json({ error: 'Refresh token inválido o expirado' });
+            const token = req.cookies.refreshToken;
+            const accesToken = await this.authServices.refreshAccesToken(token);
+            return res.status(200).json(accesToken);
+        } catch (error) {            
+            return res.status(403).json({ error: error.message });
         }
     }
+
+    logout(req, res) {
+        try {
+            const token = req.cookies?.refreshToken;
+
+            if (!token) {
+            return res.status(401).json({ mensaje: 'No hay sesión activa para cerrar' });
+            }
+
+            res.clearCookie('refreshToken', {
+            httpOnly: true,
+            secure: false,
+            sameSite: 'Strict'
+            });
+
+            res.status(200).json({ mensaje: 'Sesión cerrada correctamente' });
+        } catch (error) {
+            res.status(400).json({ error: error.message });
+        }
+    }
+
+
 }

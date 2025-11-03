@@ -1,28 +1,29 @@
-
-
-//Definición del modelo Categoria 
-export const categoriaModel = (sequelize, DataTypes) => {
+export const municipioModel = (sequelize, DataTypes) => {
     return sequelize.define(
-        'categoria', 
+        'municipio', 
         {
             id:{
                 type: DataTypes.INTEGER,
                 primaryKey: true,
                 autoIncrement: true         
             },
-            categoria:{
+            municipio:{
                 type:DataTypes.STRING(50),
                 allowNull: false 
             },
-            descripcion:{
-                type:DataTypes.TEXT,
-                allowNull: true
+            departamentoId:{
+                type:DataTypes.INTEGER,
+                allowNull: false,
+                references:{
+                    model: 'departamento',
+                    key: 'id'
+                },
             },
         },
         {  
             //Configuraciones adicionales
-            modelName: 'categoria',
-            tableName: 'categorias',
+            modelName: 'municipio',
+            tableName: 'municipio',
             paranoid: true, //Sirve par realizar una eliminación lógica sin borrar el registro de la base de datos
             timestamps: true, //Timesamps crea en la BD los campos: createdAt, updatedAt, deletedAt
             underscored: true //Convierte los nombres de los campos de camelCase a snake_case en la BD
