@@ -8,9 +8,9 @@ const createCarritoSchema = z.object({
     .min(1, "El ID de sesión no puede estar vacío."),
   
   usuarioId: z
-    .string({
-      required_error: "El ID del usuario es obligatorio.",
-    })
+   .coerce
+    .number()
+    .int("La cantidad debe ser un número entero.")
     .min(1).optional(),
 
   productoId: z
