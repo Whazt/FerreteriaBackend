@@ -1,3 +1,4 @@
+import bcrypt from "bcrypt";
 export class UsuarioServices{
     constructor({usuarioModel, zodValidator, usuarioSchema}){
         this.usuario = usuarioModel;
@@ -16,7 +17,7 @@ export class UsuarioServices{
         const offset = (finalPage - 1) * finalLimit;
         const { count, rows } = await this.usuario.findAndCountAll({
             offset,
-            limit: finalLimit, m
+            limit: finalLimit,
             //Para agregar filtros
             //order: [['createdAt', 'DESC']],
             // where: {...}
@@ -30,7 +31,7 @@ export class UsuarioServices{
                 totalPages: Math.ceil(count / finalLimit),
                 hasNext: finalPage * finalLimit < count
             },
-            mensaje: rows.length ? undefined : 'No hay productos disponibles'
+            mensaje: rows.length ? undefined : 'No hay usuarios disponibles'
         };
     }
     
@@ -40,14 +41,24 @@ export class UsuarioServices{
     }
 
     async create(data){
-        const validatedData = this.validator.validate(this.schema.create, data);
-        return await this.usuario.create(validatedData);
+        const dataValid = this.validator.validate(this.schema.create, data);
+        const salt = await bcrypt.genSalt(15);
+        const hashedPassword = await bcrypt.hash(dataValid.password, salt);
+        const userData = {
+                email: dataValid.email, 
+                contrasenaHash: hashedPassword, 
+                rolId: dataValid.rolId
+            }
+        return await this.usuario.create(userData);
     }
 
     async update(id, data){
         const usuario = await this.usuario.findByPk(id);
         if(!usuario) throw new Error('Usuario no encontrada');
-        const validatedData = this.validator.validate(this.schema.update, data);
+        let validatedData = this.validator.validate(this.schema.update, data);
+        if(validatedData.password){
+            validatedData.contrasenaHash = await bcrypt.hash(validatedData.contrasenaHash, salt);
+        }
         return await usuario.update(validatedData);
     }
 

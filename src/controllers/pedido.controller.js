@@ -34,8 +34,8 @@ export class PedidoController {
 
     create = async (req, res) => {
         try {
-            const { usuarioId, items } = req.body;
-            const pedido = await this.pedidoService.create(usuarioId, items);
+            const { usuarioId, data } = req.body;
+            const pedido = await this.pedidoService.create(usuarioId, data);
             res.status(201).json(pedido);
         } catch (err) {
             res.status(400).json({ error: err.message });

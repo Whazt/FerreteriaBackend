@@ -30,13 +30,14 @@ export class CompraServices {
         const t = await this.compra.sequelize.transaction();
         try {
             const proveedor = await this.proveedor.findOne({ where: { id: proveedorId } }, { transaction: t });
+
             if (!proveedor) throw new Error('Proveedor no encontrado');
             const productos = await this.producto.findAll({
                 where: { cod_producto: data.map(i => i.productoId) },
                 transaction: t
             });
             const detalles = data.map(item => {
-                const producto = productos.find(p => p.cod_producto === item.productoId);
+                const producto = productos.find(p => p.codProducto === item.productoId);
                 if (!producto) throw new Error(`Producto ${item.productoId} no encontrado`);
                 const cantidad = item.cantidad;
                 const precio = parseFloat(item.precio);
@@ -61,7 +62,7 @@ export class CompraServices {
                 compraId: compra.id,
                 productoId: d.productoId,
                 cantidad: d.cantidad,
-                precio: d.precio,
+                precioCompra: d.precio,
                 iva: d.iva
             }));
 

@@ -31,6 +31,7 @@ export class TipoAjusteController {
 
     create = async (req, res) => {
         try {
+            console.log('llega controller')
             const nuevoTipo = await this.tipoAjusteService.create(req.body);
             res.status(201).json(nuevoTipo);
         } catch (err) {

@@ -15,15 +15,17 @@ export class TipoAjusteServices{
     }
 
     async create(data){
-        const validatedData = this.validator.validate(this.schema.create, data);
-        return await this.tipoajuste.create(validatedData);
+        console.log('llega service');
+        //const validatedData = this.validator.validate(this.schema.create, data);
+        console.log('retorna service')
+        return await this.tipoajuste.create(data);
     }
 
     async update(id, data){
         const tipoajuste = await this.tipoajuste.findByPk(id);
         if(!tipoajuste) throw new Error('Tipo de Ajuste no encontrado');
-        const validatedData = this.validator.validate(this.schema.update, data);
-        return await tipoajuste.update(validatedData);
+        //const validatedData = this.validator.validate(this.schema.update, data);
+        return await tipoajuste.update(data);
     }
 
     async delete(id){

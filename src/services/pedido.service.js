@@ -42,7 +42,7 @@ export class PedidoServices{
             });
             //Obteniendo informacion necesario de productos
             const detalles = data.map(item => {
-                const producto = productos.find(p => p.cod_producto === item.productoId);
+                const producto = productos.find(p => p.codProducto === item.productoId);
                 if (!producto) throw new Error(`Producto ${item.productoId} no encontrado`);
                 const cantidad = item.cantidad;
                 const precioUnitario = parseFloat(producto.precio);
@@ -52,7 +52,7 @@ export class PedidoServices{
                     productoId: item.productoId,
                     cantidad,
                     precio: precioUnitario,
-                    iva: parseFloat((precio * cantidad) * 0.15)
+                    iva: parseFloat((precioUnitario * cantidad) * 0.15)
                 };
             });
             //Totales de pedido
@@ -127,12 +127,14 @@ export class PedidoServices{
             });
             if (!pedido) throw new Error('Pedido no encontrado');
             // Devolver existencias
-            for (const detalle of pedido.detalles) {
-            await this.producto.increment('existencias', {
-                by: detalle.cantidad,
-                where: { cod_producto: detalle.productoId },
-                transaction: t
-            });
+            if(!(pedido.estado === 'cancelado')){
+                for (const detalle of pedido.detalles) {
+                await this.producto.increment('existencias', {
+                    by: detalle.cantidad,
+                    where: { cod_producto: detalle.productoId },
+                    transaction: t
+                });
+                }
             }
             await pedido.destroy({ transaction: t });
             await t.commit();

@@ -7,6 +7,6 @@ export const createCarritoRouter = ({carritoController}) => {
     carritoRouter.put('/', carritoController.ajustarCantidad);
     carritoRouter.delete('/', carritoController.eliminarProducto);
     carritoRouter.delete('/:id', carritoController.limpiarCarrito);
-    carritoRouter.get('/:sesionId', carritoController.calcularTotal);
+    carritoRouter.get('/:sesionId/calcular', carritoController.calcularTotal);
     return carritoRouter;
 }

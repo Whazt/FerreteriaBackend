@@ -15,15 +15,15 @@ export class DireccionServices{
     }
 
     async create(data){
-        const validatedData = this.validator.validate(this.schema.create, data);
-        return await this.direccion.create(validatedData);
+        //const validatedData = this.validator.validate(this.schema.create, data);
+        return await this.direccion.create(data);
     }
 
     async update(id, data){
         const direccion = await this.direccion.findByPk(id);
         if(!direccion) throw new Error('Dirección no encontrado');
-        const validatedData = this.validator.validate(this.schema.update, data);
-        return await direccion.update(validatedData);
+        //const validatedData = this.validator.validate(this.schema.update, data);
+        return await direccion.update(data);
     }
 
     async delete(id){

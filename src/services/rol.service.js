@@ -10,7 +10,7 @@ export class RolServices{
     }
 
     async getById(id){
-        const rol = await this.rol.findByPK(id);
+        const rol = await this.rol.findByPk(id);
         return rol ? rol : {message: 'Rol No Encontrado'}
     }
 

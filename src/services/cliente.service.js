@@ -10,7 +10,7 @@ export class ClienteServices{
     }
 
     async getById(id){
-        const cliente = await this.cliente.findByPK(id);
+        const cliente = await this.cliente.findByPk(id);
         return cliente ? cliente : {message: 'Cliente No Encontrado'}
     }
 

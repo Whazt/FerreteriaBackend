@@ -29,7 +29,6 @@ export class AjusteServices {
     async create(data) {
         const t = await this.ajuste.sequelize.transaction();
         try {
-        this.validator.parse(this.schema, data);
 
         const producto = await this.producto.findOne({
             where: { cod_producto: data.productoId },

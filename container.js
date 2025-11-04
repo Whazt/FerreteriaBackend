@@ -33,7 +33,7 @@ import { MunicipioSchema } from './src/schemas/municipio.schema.js'
 import { ProductoSchema } from './src/schemas/producto.schema.js';
 import { RolSchema } from './src/schemas/rol.schema.js';
 import { ProveedorSchema } from './src/schemas/proveedor.schema.js';
-import { TipoAjusteSchema } from './src/schemas/tipoajuste.schema.js'
+import { TipoAjusteSchema } from './src/schemas/tipoajuste.schema.js';
 import { UserSchema } from './src/schemas/user.schema.js';
 //#endregion
 //#region Servicios
