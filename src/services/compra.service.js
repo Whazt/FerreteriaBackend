@@ -26,11 +26,10 @@ export class CompraServices {
         });
         return compra || { message: 'Compra no encontrada' };
     }
-
-    async create(usuarioId, data) {
+    async create(data) {
         const t = await this.compra.sequelize.transaction();
         try {
-            const proveedor = await this.proveedor.findOne({ where: { usuarioId } }, { transaction: t });
+            const proveedor = await this.proveedor.findOne({ where: { proveedorId: data.proveedorId } }, { transaction: t });
             if (!proveedor) throw new Error('Proveedor no encontrado');
             const productos = await this.producto.findAll({
                 where: { cod_producto: data.map(i => i.productoId) },
@@ -75,6 +74,7 @@ export class CompraServices {
         }
     }
 
+ 
     async aplicarCompra(id) {
         const t = await this.compra.sequelize.transaction();
         try {
