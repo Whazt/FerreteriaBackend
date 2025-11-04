@@ -34,8 +34,8 @@ export class CompraController {
 
     create = async (req, res) => {
         try {
-        const { proveedorId, items } = req.body;
-        const compra = await this.compraService.create(proveedorId, items);
+        const { proveedorId, data } = req.body;
+        const compra = await this.compraService.create(proveedorId, data);
         res.status(201).json(compra);
         } catch (err) {
         res.status(400).json({ error: err.message });
