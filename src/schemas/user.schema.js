@@ -19,7 +19,7 @@ const updateUserSchema = z.object({
         .min(5, { message: 'El correo es demasiado corto' })
         .max(50, { message: 'El correo no puede exceder 50 caracteres' })
         .trim().optional(),
-    contrasenaHash: z.string()
+    password: z.string()
         .min(8, { message: 'La contraseña debe tener al menos 8 caracteres' })
         .max(64, { message: 'La contraseña no puede exceder 64 caracteres' })
         .regex(/[A-Z]/, { message: 'Debe contener al menos una letra mayúscula' })

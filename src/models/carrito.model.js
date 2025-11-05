@@ -3,13 +3,9 @@ export const carritoModel = (sequelize, DataTypes) =>{
     return sequelize.define(
         'carrito',
         {
-            sesionId:{
-                type: DataTypes.STRING,
-                allowNull: false,
-            },
             usuarioId:{
                 type: DataTypes.INTEGER,
-                allowNull: true,
+                allowNull: false,
                 references:{
                     model: 'usuarios',
                     key: 'id'

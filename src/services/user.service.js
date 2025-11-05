@@ -52,12 +52,16 @@ export class UsuarioServices{
         return await this.usuario.create(userData);
     }
 
-    async update(id, data){
+    async update(id, data) {
         const usuario = await this.usuario.findByPk(id);
-        if(!usuario) throw new Error('Usuario no encontrada');
+        if (!usuario) throw new Error('Usuario no encontrado');
         let validatedData = this.validator.validate(this.schema.update, data);
-        if(validatedData.password){
-            validatedData.contrasenaHash = await bcrypt.hash(validatedData.contrasenaHash, salt);
+    
+        if (validatedData.password) {
+            const salt = await bcrypt.genSalt(15);
+            const hashedPassword = await bcrypt.hash(validatedData.password, salt);
+            validatedData.contrasenaHash = hashedPassword;
+            delete validatedData.password; 
         }
         return await usuario.update(validatedData);
     }

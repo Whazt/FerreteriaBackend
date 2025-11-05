@@ -147,6 +147,7 @@ export class Container{
         });
         this.carritoServices = new CarritoServices({
             carritoModel: this.carritoModel,
+            productoModel: this.productoModel,
             zodValidator: this.zodValidator,
             carritoSchema: this.carritoSchema
         });

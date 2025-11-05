@@ -1,81 +1,89 @@
 export class CarritoController {
     constructor({ carritoServices }) {
-        this.carritoService = carritoServices;
+        this.carritoServices = carritoServices;
     }
-
-    getCarritoBySesion = async (req, res) => {
+    // Obtener carrito actual del usuario logueado
+    getCarrito = async (req, res) => {
         try {
-            const { sesionId } = req.params;
-            const items = await this.carritoService.getCarritoBySesion(sesionId);
-            res.status(200).json(items);
-        }catch (err) {
-            if (err.details) {
-                return res.status(err.status || 400).json({ errores: err.details });
-            }
-            res.status(500).json({ error: err.message });
+            const usuarioId = req.user.id;
+            const carrito = await this.carritoServices.getCarritoByUsuario(usuarioId);
+            return res.json(carrito);
+        } catch (error) {
+            console.error('Error al obtener carrito:', error);
+            return res.status(500).json({ error: error.message });
         }
     };
-
+    // Agregar producto al carrito
     agregarProducto = async (req, res) => {
         try {
-            const { sesionId, productoId, cantidad } = req.body;
-            const resultado = await this.carritoService.agregarProducto({ sesionId, productoId, cantidad });
-            res.status(201).json(resultado);
-        }catch (err) {
-            if (err.details) {
-                return res.status(err.status || 400).json({ errores: err.details });
-            }
-            res.status(500).json({ error: err.message });
+            const usuarioId = req.user.id;
+            const data = { ...req.body, usuarioId };
+            const result = await this.carritoServices.agregarProducto({ data });
+            return res.json(result);
+        } catch (error) {
+            console.error('Error al agregar producto:', error);
+            return res.status(400).json({ error: error.message });
         }
     };
-
+    // Ajustar cantidad (sumar/restar)
     ajustarCantidad = async (req, res) => {
         try {
-            const resultado = await this.carritoService.ajustarCantidad({ data: req.body });
-            res.status(200).json(resultado);
-        }catch (err) {
-            if (err.details) {
-                return res.status(err.status || 400).json({ errores: err.details });
-            }
-            res.status(500).json({ error: err.message });
+            const usuarioId = req.user.id;
+            const data = { ...req.body, usuarioId };
+            const result = await this.carritoServices.ajustarCantidad({ data });
+            return res.json(result);
+        } catch (error) {
+            console.error('Error al ajustar cantidad:', error);
+            return res.status(400).json({ error: error.message });
         }
     };
-
+    // Eliminar un producto específico
     eliminarProducto = async (req, res) => {
         try {
-            const resultado = await this.carritoService.eliminarProducto({ data: req.body });
-            res.status(200).json({ mensaje: 'Producto eliminado del carrito', resultado });
-        }catch (err) {
-            if (err.details) {
-                return res.status(err.status || 400).json({ errores: err.details });
-            }
-            res.status(500).json({ error: err.message });
+            const usuarioId = req.user.id;
+            const data = { ...req.body, usuarioId };
+            const result = await this.carritoServices.eliminarProducto({ data });
+            return res.json({ eliminado: result > 0 });
+        } catch (error) {
+            console.error('Error al eliminar producto:', error);
+            return res.status(400).json({ error: error.message });
         }
     };
-
+    // Vaciar todo el carrito del usuario
     limpiarCarrito = async (req, res) => {
         try {
-            const { sesionId } = req.params;
-            await this.carritoService.limpiarCarrito(sesionId);
-            res.status(200).json({ mensaje: 'Carrito limpiado correctamente' });
-        }catch (err) {
-            if (err.details) {
-                return res.status(err.status || 400).json({ errores: err.details });
-            }
-            res.status(500).json({ error: err.message });
+            const usuarioId = req.user.id;
+            await this.carritoServices.limpiarCarrito(usuarioId);
+            return res.json({ mensaje: 'Carrito limpiado correctamente' });
+        } catch (error) {
+            console.error('Error al limpiar carrito:', error);
+            return res.status(500).json({ error: error.message });
         }
     };
-
+    // Calcular total del carrito
     calcularTotal = async (req, res) => {
         try {
-            const { sesionId } = req.params;
-            const total = await this.carritoService.calcularTotal(sesionId);
-            res.status(200).json({ total });
-        }catch (err) {
-            if (err.details) {
-                return res.status(err.status || 400).json({ errores: err.details });
+            const usuarioId = req.user.id;
+            const total = await this.carritoServices.calcularTotal(usuarioId);
+            return res.json({ total });
+        } catch (error) {
+            console.error('Error al calcular total:', error);
+            return res.status(500).json({ error: error.message });
+        }
+    };
+    // Sincronizar carrito local al iniciar sesión
+    sincronizarCarritoLocal = async (req, res) => {
+        try {
+            const usuarioId = req.user.id;
+            const productosLocal = req.body.productos; 
+            if (!Array.isArray(productosLocal)) {
+                return res.status(400).json({ error: 'Formato inválido de productos' });
             }
-            res.status(500).json({ error: err.message });
+            const result = await this.carritoServices.sincronizarCarritoLocal(usuarioId, productosLocal);
+            return res.json({ mensaje: 'Carrito sincronizado correctamente', result });
+        } catch (error) {
+            console.error('Error al sincronizar carrito local:', error);
+            return res.status(500).json({ error: error.message });
         }
     };
 }
