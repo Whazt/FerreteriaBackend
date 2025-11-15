@@ -65,7 +65,7 @@ export const productoModel = (sequelize, DataTypes) => {
             modelName: 'producto',
             tableName:'productos',
             paranoid: true,
-            timestamp: true,
+            timestamps: true,
             underscored: true
         }
     );
