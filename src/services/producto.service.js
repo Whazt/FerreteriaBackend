@@ -59,8 +59,8 @@ export class ProductoServices{
         // 🔹 Filtro por búsqueda en nombre o descripción
         if (data.search) {
             where[Op.or] = [
-                { producto: { [Op.like]: `%${data.search}%` } },
-                { descripcion: { [Op.like]: `%${data.search}%` } }
+                { producto: { [Op.iLike]: `%${data.search}%` } },
+                { descripcion: { [Op.iLike]: `%${data.search}%` } }
             ];
         }
         const { count, rows } = await this.producto.findAndCountAll({
