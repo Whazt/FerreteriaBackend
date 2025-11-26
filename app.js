@@ -20,7 +20,11 @@ import { Container } from './container.js';
 
 const app = express();
 //Evitar eroreres de CORS
-app.use(cors());
+
+app.use(cors({
+  origin: "http://localhost:5173", // tu frontend
+  credentials: true,               // permite cookies/autenticación
+}));
 //Configuraciones de express
 app.disable('x-powered-by');
 app.use(express.json());
