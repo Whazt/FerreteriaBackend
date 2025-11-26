@@ -191,7 +191,8 @@ export class Container{
         this.productoServices = new ProductoServices({
             productoModel: this.productoModel,
             zodValidator: this.zodValidator,
-            productoSchema: this.productoSchema
+            productoSchema: this.productoSchema,
+            categoriaModel: this.categoriaModel
         });
         this.rolServices = new RolServices({
             rolModel: this.rolModel,

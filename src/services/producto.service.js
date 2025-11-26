@@ -1,9 +1,10 @@
 import { Op } from "sequelize";
 export class ProductoServices{
-    constructor({productoModel, zodValidator, productoSchema}){
+    constructor({productoModel, zodValidator, productoSchema, categoriaModel}){
         this.producto = productoModel,
         this.validator = zodValidator,
-        this.schema = productoSchema
+        this.schema = productoSchema,
+        this.categoria = categoriaModel
     }
     //Metodo para vizualizacion del cliente
     // async getAll(data) {
@@ -81,9 +82,21 @@ export class ProductoServices{
         };
     }
 
-    async getById(id){
-        const producto = await this.producto.findByPk(id);
-        return producto ? producto : {message: 'Producto No Encontrado'}
+    // async getById(id){
+    //     const producto = await this.producto.findByPk(id);
+    //     return producto ? producto : {message: 'Producto No Encontrado'}
+    // }
+
+    async getById(id) {
+        const producto = await this.producto.findByPk(id, {
+            include: [
+                {
+                    model: this.categoria, 
+                    as: "categoria"
+                }
+            ]
+        });
+        return producto ? producto : { message: "Producto No Encontrado" };
     }
 
     async create(data){
