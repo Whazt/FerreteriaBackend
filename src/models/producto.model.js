@@ -46,7 +46,7 @@ export const productoModel = (sequelize, DataTypes) => {
                 }
             },
             imagenUrl:{
-                type: DataTypes.STRING,
+                type: DataTypes.STRING(500),
                 allowNull: true,
             },
             existenciaMax:{

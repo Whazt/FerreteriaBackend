@@ -104,12 +104,20 @@ export class ProductoServices{
         return await this.producto.create(validatedData);
     }
 
-    async update(id,data){
+    async update(id, data) {
+        console.log(id, 'data',data)
         const producto = await this.producto.findByPk(id);
-        if(!producto) throw new Error('producto no encontrado');
-        const validatedData = await this.validator.validate(this.schema.update, data)
-        return await producto.update(validatedData);
+        if (!producto) throw new Error("producto no encontrado");
+        console.log('pasa')
+        const validatedData = await this.validator.validate(this.schema.update, data);
+        console.log('Validated: ',validatedData)
+        await producto.update(validatedData);
+        const productoActualizado = await this.producto.findByPk(id);
+        // 🔒 Devuelve objeto plano
+        console.log(productoActualizado.get({ plain: true }))
+        return productoActualizado.get({ plain: true });
     }
+
 
     async delete(id){
         const producto = await this.producto.findByPk(id);

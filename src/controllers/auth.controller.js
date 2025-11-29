@@ -25,7 +25,7 @@ export class AuthController {
                 httpOnly: true,
                 secure: false, // En producción debe ser true 
                 sameSite: 'Strict', 
-                maxAge: 7 * 24 * 60 * 60 * 1000 // 7 días CAMBIAR A 30 DIAS
+                maxAge: 30 * 24 * 60 * 60 * 1000 // 7 días CAMBIAR A 30 DIAS
             });
 
             // Enviar solo el accessToken en la respuesta

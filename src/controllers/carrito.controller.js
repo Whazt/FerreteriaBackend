@@ -74,16 +74,22 @@ export class CarritoController {
     // Sincronizar carrito local al iniciar sesión
     sincronizarCarritoLocal = async (req, res) => {
         try {
+            // console.log("req.user:", req.user);
+            // console.log("req.body:", req.body);
+
             const usuarioId = req.user.id;
-            const productosLocal = req.body.productos; 
+            const productosLocal = req.body.productos;
+
             if (!Array.isArray(productosLocal)) {
-                return res.status(400).json({ error: 'Formato inválido de productos' });
+            return res.status(400).json({ error: "Formato inválido de productos" });
             }
-            const result = await this.carritoServices.sincronizarCarritoLocal(usuarioId, productosLocal);
-            return res.json({ mensaje: 'Carrito sincronizado correctamente', result });
+
+            const result = await this.carritoServices.crearCarritoOnLogin({usuarioId, items: productosLocal});
+            return res.json({ mensaje: "Carrito sincronizado correctamente", result });
         } catch (error) {
-            console.error('Error al sincronizar carrito local:', error);
+            // console.error("Error al sincronizar carrito local:", error);
             return res.status(500).json({ error: error.message });
         }
     };
+
 }

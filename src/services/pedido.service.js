@@ -27,61 +27,32 @@ export class PedidoServices{
         return pedido ? pedido : {message: 'Pedido No Encontrado'}
     }
 
-    async create(usuarioId, data ){
+    async create(usuarioId, data, opciones) {
         const t = await this.pedido.sequelize.transaction();
         try {
-            //Obtener cliente
-            const cliente = await this.cliente.findOne({where: { usuarioId}}, {transaction: t})
-            if(!cliente) throw new Error('Cliente no encontrado');
-            //Obtener productos del carrito
-            const productos = await this.producto.findAll({
-                where: {
-                    cod_producto: data.map(item => item.productoId)
-                },
-                transaction: t
-            });
-            //Obteniendo informacion necesario de productos
-            const detalles = data.map(item => {
-                const producto = productos.find(p => p.codProducto === item.productoId);
-                if (!producto) throw new Error(`Producto ${item.productoId} no encontrado`);
-                const cantidad = item.cantidad;
-                const precioUnitario = parseFloat(producto.precio);
-                const existencias = producto.existencias
-                if(existencias < cantidad) throw new Error(`Producto ${item.productoId} no cuenta con suficientes existencias`)
-                return {
-                    productoId: item.productoId,
-                    cantidad,
-                    precio: precioUnitario,
-                    iva: parseFloat((precioUnitario * cantidad) * 0.15)
-                };
-            });
-            //Totales de pedido
+            const cliente = await this.cliente.findOne({ where: { usuarioId }, transaction: t });
+            if (!cliente) throw new Error('Cliente no encontrado');
+
+            // ... lógica de productos igual que antes ...
+
             const subtotal = detalles.reduce((acc,d)=> acc + (d.precio * d.cantidad),0);
             const iva = detalles.reduce((acc, d) => acc + d.iva, 0);
-            //Creando el pedido
+
+            // Definir gasto de envío
+            const gastoEnvio = opciones.tipoEntrega === 'envio' ? 150.00 : 0.00; // ejemplo fijo, o dinámico
+
             const pedido = await this.pedido.create({
-                clienteId: cliente.id,
-                subtotal,
-                iva,
-                estado: 'pendiente'
+            clienteId: cliente.id,
+            subtotal,
+            iva,
+            gastoEnvio,
+            estado: 'pendiente',
+            metodoPago: opciones.metodoPago,
+            tipoEntrega: opciones.tipoEntrega
             }, { transaction: t });
-            //Insertando detalles
-            const detallesPedido = detalles.map(d => ({
-                pedidoId: pedido.id,
-                productoId: d.productoId,
-                cantidad: d.cantidad,
-                precio: d.precio,
-                iva: d.iva
-            }));
-            await this.detallePedido.bulkCreate(detallesPedido, { transaction: t });
-            //restando existencias
-            for (const d of detallesPedido) {
-                await this.producto.decrement('existencias', {
-                    by: d.cantidad,
-                    where: { cod_producto: d.productoId },
-                    transaction: t
-                });
-            }
+
+            // ... insertar detalles y restar existencias ...
+
             await t.commit();
             return pedido;
         } catch (err) {
@@ -89,6 +60,83 @@ export class PedidoServices{
             throw new Error('Error al crear el pedido: ' + err.message);
         }
     }
+
+    async create(usuarioId, data) {
+        const t = await this.pedido.sequelize.transaction();
+        try {
+            const cliente = await this.cliente.findOne({ where: { usuarioId }, transaction: t });
+            if (!cliente) throw new Error('Cliente no encontrado');
+            // Obtener productos
+            const productos = await this.producto.findAll({
+            where: { cod_producto: data.productos.map(item => item.productoId) },
+            transaction: t
+            });
+            console.log(productos)
+            // Mapear detalles
+            const detalles = data.productos.map(item => {
+            const producto = productos.find(p => p.codProducto === item.productoId);
+            console.log(`cod_producto:${productos.find(p => p.cod_producto)} ====== item.productoId ${item.productoId}`)
+            if (!producto) {
+                console.error("Producto no encontrado:", item.productoId);
+                throw new Error(`Producto${item.productoId} no encontrado`);
+            }
+            if (producto.existencias < item.cantidad) {
+                console.error("Stock insuficiente:", producto.cod_producto, producto.existencias, item.cantidad);
+                throw new Error(`Stock insuficiente para ${item.productoId}`);
+            }
+            const precioUnitario = parseFloat(producto.precio);
+            if (isNaN(precioUnitario)) {
+                console.error("Precio inválido:", producto.cod_producto, producto.precio);
+                throw new Error(`Precio inválido para ${item.productoId}`);
+            }
+            return {
+                productoId: item.productoId,
+                cantidad: item.cantidad,
+                precio: precioUnitario,
+                iva: parseFloat((precioUnitario * item.cantidad) * 0.15)
+            };
+            });
+
+            const subtotal = detalles.reduce((acc,d)=> acc + (d.precio * d.cantidad),0);
+            const iva = detalles.reduce((acc, d) => acc + d.iva, 0);
+
+            // Gasto de envío (si no viene en data, default 0)
+            const gastoEnvio = data.gastoEnvio ?? (data.tipoEntrega === 'envio' ? 150.00 : 0.00);
+            console.log('entra a crear el pedido')
+            // Crear pedido
+            const pedido = await this.pedido.create({
+            clienteId: cliente.id,
+            subtotal,
+            iva,
+            gastoEnvio,
+            estado: 'pendiente',
+            metodoPago: data.metodoPago,
+            tipoEntrega: data.tipoEntrega
+            }, { transaction: t });
+            console.log('entra a insertar detalles')
+            // Insertar detalles
+            await this.detallePedido.bulkCreate(
+            detalles.map(d => ({ ...d, pedidoId: pedido.id })),
+            { transaction: t }
+            );
+            console.log('entra a resta existencias')
+            // Restar existencias
+            for (const d of detalles) {
+            await this.producto.decrement('existencias', {
+                by: d.cantidad,
+                where: { cod_producto: d.productoId },
+                transaction: t
+            });
+            }
+
+            await t.commit();
+            return pedido;
+        } catch (err) {
+            await t.rollback();
+            throw new Error('Error al crear el pedido: ' + err.message);
+        }
+    }
+
 
     async updateEstado(id, nuevoEstado) {
         const t = await this.pedido.sequelize.transaction();

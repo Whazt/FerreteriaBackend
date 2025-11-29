@@ -42,6 +42,7 @@ export class ProductoController{
 
     update = async(req, res) => {
         try{
+            console.log('aaaa')
             const {id} = req.params;
             const updated = await this.productoService.update(id, req.body);
             if(!updated) return res.status(404).json({message: 'Producto no encontrado'});

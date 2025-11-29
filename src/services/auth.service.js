@@ -45,7 +45,7 @@ export class AuthServices {
     
     //Metodos para generar Tokens
     generarAccessToken(payload) {
-        return jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '60m' });
+        return jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '30m' });
     }
     
     generarRefreshToken(payload) {

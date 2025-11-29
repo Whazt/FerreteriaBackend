@@ -31,6 +31,7 @@ export class DireccionController {
 
     create = async (req, res) => {
         try {
+            console.log('nueva direccion', req.body)
             const nuevaDireccion = await this.direccionService.create(req.body);
             res.status(201).json(nuevaDireccion);
         } catch (err) {

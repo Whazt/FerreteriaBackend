@@ -1,9 +1,11 @@
 import bcrypt from "bcrypt";
 export class UsuarioServices{
-    constructor({usuarioModel, zodValidator, usuarioSchema}){
+    constructor({usuarioModel, zodValidator, usuarioSchema, clienteModel, direccionModel}){
         this.usuario = usuarioModel;
         this.validator = zodValidator;
         this.schema = usuarioSchema;
+        this.direccion = direccionModel;
+        this.cliente = clienteModel;
     }
 
     //GetAll admin
@@ -35,10 +37,28 @@ export class UsuarioServices{
         };
     }
     
-    async getById(id){
-        const usuario = await this.usuario.findByPk(id);
-        return usuario ? usuario : {message: 'Usuario No Encontrado'}
+    async getById(id) {
+        const usuario = await this.usuario.findByPk(id, {
+            include: [
+            {
+                model: this.cliente,
+                as: 'cliente',
+                required: false,
+                include: [
+                    {
+                        model: this.direccion,
+                        as: 'direcciones', // ojo: debe coincidir con el alias de la relación
+                        where: { por_defecto: true },
+                        required: false // para que no falle si no hay dirección por defecto
+                    }
+                ]
+            }
+            ]
+        });
+
+        return usuario ? usuario : { message: 'Usuario No Encontrado' };
     }
+
 
     async create(data){
         const dataValid = this.validator.validate(this.schema.create, data);

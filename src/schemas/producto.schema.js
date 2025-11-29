@@ -19,6 +19,9 @@ const createProductoSchema = z.object({
       required_error: "El precio es obligatorio.",
     })
     .min(0.01, "El precio debe ser mayor o igual a 0.01."),
+  imagenUrl: z
+    .string()
+    .min(1, "El nombre del producto no puede estar vacío."),
 
   existencias: z
     .coerce
@@ -63,8 +66,9 @@ const updateProductoSchema = z.object({
     descripcion: z.string().min(1).optional(),
     precio: z.number().min(0.01).optional(),
     existencias: z.int().min(0).optional(),
-    categoriaId: z.int().min(1).optional(),
+    categoriaId:z.coerce.number().int().min(1).optional(),
     costo: z.number().min(1).optional(),
+    imagenUrl:z.string().min(1).optional(),
     existenciaMax: z.int().min(0).optional(),
     existenciaMin: z.int().min(0).optional(),
 });

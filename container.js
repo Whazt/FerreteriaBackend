@@ -207,7 +207,9 @@ export class Container{
         this.usuarioServices = new UsuarioServices({
             usuarioModel: this.usuarioModel,
             zodValidator: this.zodValidator,
-            usuarioSchema: this.userSchema
+            usuarioSchema: this.userSchema,
+            direccionModel: this.direccionModel,
+            clienteModel: this.clienteModel
         });
         //#endregion
 

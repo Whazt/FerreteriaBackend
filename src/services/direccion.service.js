@@ -16,6 +16,7 @@ export class DireccionServices{
 
     async create(data){
         //const validatedData = this.validator.validate(this.schema.create, data);
+        console.log(data)
         return await this.direccion.create(data);
     }
 

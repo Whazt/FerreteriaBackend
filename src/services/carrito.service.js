@@ -16,51 +16,76 @@ export class CarritoServices {
     }
 
     // Agregar Productos al carrito
-    async agregarProducto({data} ) {
+    async agregarProducto({ data }) {
         const { usuarioId, productoId, cantidad } = data;
-        if (!usuarioId) throw new Error('usuarioId es requerido');
+        if (!usuarioId) throw new Error("usuarioId es requerido");
+
         const producto = await this.producto.findByPk(productoId);
-        if (!producto) throw new Error('Producto no existe');
+        if (!producto) throw new Error("Producto no existe");
+
         const existente = await this.carrito.findOne({
-            where: { usuarioId, productoId }
+            where: { usuarioId, productoId },
         });
+
         const cantidadFinal = (existente?.cantidad || 0) + cantidad;
         if (cantidadFinal > producto.existencias) {
             throw new Error(`Stock insuficiente. Máximo permitido: ${producto.existencias}`);
         }
+
+        let registro;
         if (existente) {
             existente.cantidad = cantidadFinal;
-            return await existente.save();
+            registro = await existente.save();
+        } else {
+            registro = await this.carrito.create({ usuarioId, productoId, cantidad });
         }
-        return await this.carrito.create({ usuarioId, productoId, cantidad });
+
+        // 🔹 Traemos el registro actualizado con el producto incluido
+        const conProducto = await this.carrito.findOne({
+            where: { id: registro.id },
+            include: [{ model: this.producto, as: "producto" }],
+        });
+
+        return conProducto;
     }
+
 
     // Ajustar cantidad (sumar/restar)
     async ajustarCantidad({ data }) {
-        //const validatedData = this.validator.validate(this.schema.ajustar, data);
         const { usuarioId, productoId, operacion } = data;
-        if (!usuarioId) throw new Error('usuarioId es requerido');
+        if (!usuarioId) throw new Error("usuarioId es requerido");
+
         const item = await this.carrito.findOne({ where: { usuarioId, productoId } });
-        if (!item) throw new Error('Producto no está en el carrito');
+        if (!item) throw new Error("Producto no está en el carrito");
+
         const producto = await this.producto.findByPk(productoId);
-        if (!producto) throw new Error('Producto no existe');
-        if (operacion === 'sumar') {
+        if (!producto) throw new Error("Producto no existe");
+
+        if (operacion === "sumar") {
             if (item.cantidad + 1 > producto.stock) {
-                throw new Error(`Stock insuficiente. Máximo permitido: ${producto.stock}`);
+            throw new Error(`Stock insuficiente. Máximo permitido: ${producto.stock}`);
             }
             item.cantidad += 1;
-            return await item.save();
-        }
-        if (operacion === 'restar') {
+            await item.save();
+        } else if (operacion === "restar") {
             if (item.cantidad - 1 <= 0) {
-                await item.destroy();
-                return { eliminado: true };
+            await item.destroy();
+            return { eliminado: true, productoId };
             }
             item.cantidad -= 1;
-            return await item.save();
+            await item.save();
+        } else {
+            throw new Error("Operación inválida");
         }
-        throw new Error('Operación inválida');
+
+        // 🔹 Devolver solo el item actualizado con producto incluido
+        return await this.carrito.findOne({
+            where: { usuarioId, productoId },
+            include: [{ model: this.producto, as: "producto" }],
+        });
     }
+
+
 
     // Eliminar producto
     async eliminarProducto({ data }) {
@@ -86,27 +111,39 @@ export class CarritoServices {
 
     // Crear o fusionar carrito al iniciar sesión
     async crearCarritoOnLogin({ usuarioId, items }) {
-        if (!usuarioId) throw new Error('usuarioId es requerido');
-        if (!Array.isArray(items)) throw new Error('Formato de items inválido');
+        if (!usuarioId) throw new Error("usuarioId es requerido");
+        if (!Array.isArray(items)) throw new Error("Formato de items inválido");
+
         for (const item of items) {
             const { productoId, cantidad } = item;
             const producto = await this.producto.findByPk(productoId);
-            if (!producto) continue; // O lanzar error si prefieres
+            if (!producto) continue; // o lanzar error si prefieres
+
             const existente = await this.carrito.findOne({
-                where: { usuarioId, productoId }
+            where: { usuarioId, productoId },
             });
+
             const cantidadFinal = (existente?.cantidad || 0) + cantidad;
             if (cantidadFinal > producto.stock) {
-                throw new Error(`Stock insuficiente para ${producto.nombre}. Máximo: ${producto.stock}`);
+            throw new Error(
+                `Stock insuficiente para ${producto.nombre}. Máximo: ${producto.stock}`
+            );
             }
+
             if (existente) {
-                existente.cantidad = cantidadFinal;
-                await existente.save();
+            existente.cantidad = cantidadFinal;
+            await existente.save();
             } else {
-                await this.carrito.create({ usuarioId, productoId, cantidad });
+            await this.carrito.create({ usuarioId, productoId, cantidad });
             }
         }
-        return { mensaje: 'Carrito sincronizado con éxito' };
+
+        // 🔹 Al final devolvemos el carrito completo con productos incluidos
+        return await this.carrito.findAll({
+            where: { usuarioId },
+            include: [{ model: this.producto, as: "producto" }],
+        });
     }
+
 }
 

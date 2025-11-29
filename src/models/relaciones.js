@@ -37,4 +37,13 @@ export const Relaciones = (modelos) => {
     //direccion municipio
     modelos.municipioModel.hasMany(modelos.direccionModel, {foreignKey: 'municipioId', as: 'direcciones'});
     modelos.direccionModel.belongsTo(modelos.municipioModel, {foreignKey: 'municipioId',as: 'municipio'});
+
+    modelos.clienteModel.hasMany(modelos.direccionModel, { 
+    foreignKey: 'cliente_id', 
+    as: 'direcciones' 
+    });
+    modelos.direccionModel.belongsTo(modelos.clienteModel, { 
+        foreignKey: 'cliente_id', 
+        as: 'cliente' 
+    });
 }
